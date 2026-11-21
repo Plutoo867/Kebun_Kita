@@ -191,4 +191,4 @@ def delete_ensiklopedia():
     except ValueError:
         print(f"{fore(124)}Input Tidak Valid!{Style.reset}")
 
-delete_ensiklopedia()
+# delete_ensiklopedia()

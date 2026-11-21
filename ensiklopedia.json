@@ -1,1 +1,11 @@
-{}
+{
+    "id1": {
+        "nama": "Bayam",
+        "nama_ilmiah": "Bayamism",
+        "deskripsi": "Jokerim",
+        "manfaat": "Mantap",
+        "harga": "0",
+        "stock": "0",
+        "funfact": "123"
+    }
+}
