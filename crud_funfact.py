@@ -300,4 +300,4 @@ def update_funfact(ensiklopedia):
 
     print("Funfact berhasil diperbarui!")
 
-hapus_funfact(ensiklopedia)
+# hapus_funfact(ensiklopedia)
