@@ -3,77 +3,23 @@ import json
 from prettytable import PrettyTable
 from colored import fore, Style
 
-id_terakhir = 0
-
 def load_data():
     if not os.path.exists("ensiklopedia.json"):
         return {}
     try:
         with open("ensiklopedia.json", "r", encoding="utf-8") as file:
             return json.load(file)
-    except json.JSONDecodeError:
+    except json.JSONDecodeError: 
         return {}
 
+
+def simpan_data():
+    with open("ensiklopedia.json", "w", encoding="utf-8") as file:
+        json.dump(ensiklopedia, file, indent=4, ensure_ascii=False)
+
+
 ensiklopedia = load_data()
-
-def daftar_tanaman(ensiklopedia):
-    warna_judul: str = f"{fore(204)}"
-    warna_isi: str = f"{fore(197)}"
-    table = PrettyTable()
-
-    table.title = (f"{warna_judul}DAFTAR TANAMAN{Style.reset}")
-    table.field_names = ["No", "Nama Tanaman"]
-    table.header = False
-    table.max_width["No"] = 3
-    table.min_width["Nama Tanaman"] = 35
-    table.align["Nama Tanaman"] = "l"
-
-
-    for nomor, tanaman in enumerate(ensiklopedia.values(), start=1):
-        tanaman = (f"{warna_isi}{tanaman["nama"]}{Style.reset}")
-        table.add_row([nomor, tanaman])
-
-    print(table)
-
-def table_detail(data):
-    table = PrettyTable()
-
-    table.title = "DETAIL TAMANAN"
-    table.field_names = ["Label", "Isi"]
-
-    table.header = False
-    table.align = "l"
-    table.max_width["Label"] = 15
-    table.min_width["Isi"] = 25
-    table.max_width["Isi"] = 25
-
-    for label, isi in data.items():
-        table.add_row([label, isi])
-
-    print(table)
-
-def read_ensiklopedia():
-    while True:
-        print("0. Kembali ke menu utama")
-        daftar_tanaman(ensiklopedia)
-        try:
-            detail = int(input("Masukkan nomor tanaman untuk melihat detail: "))
-            if detail >= 1 and detail <= len(ensiklopedia):
-                id_tanaman = list(ensiklopedia.keys()) 
-                tanaman_terpilih = ensiklopedia[id_tanaman[detail - 1]]
-                detail_tanaman = {
-                    "Nama Tanaman": tanaman_terpilih["nama"],
-                    "Nama Ilmiah": tanaman_terpilih["nama_ilmiah"],
-                    "Deskripsi": tanaman_terpilih["deskripsi"],
-                    "Manfaat Tanaman": tanaman_terpilih["manfaat"],
-                }
-                table_detail(detail_tanaman)
-            elif detail == 0:
-                break
-            else:
-                print(f"{fore(124)}Koleksi tidak tersedia!{Style.reset}")
-        except ValueError:
-            print(f"{fore(124)}Input Tidak Valid!{Style.reset}")
+id_terakhir = len(ensiklopedia)
 
 def cek_tanaman(nama):
     for tanaman in ensiklopedia.values():
@@ -86,63 +32,131 @@ def id_tanaman():
     id_terakhir += 1
     return f"id{id_terakhir}"
 
+def daftar_tanaman(ensiklopedia):
+    warna_judul: str = f"{fore(204)}"
+    warna_isi: str = f"{fore(197)}"
+    table = PrettyTable()
+
+    table.title = f"{warna_judul}DAFTAR TANAMAN{Style.reset}"
+    table.field_names = ["No", "Nama Tanaman"]
+    table.header = False
+    table.max_width["No"] = 3
+    table.min_width["Nama Tanaman"] = 35
+    table.align["Nama Tanaman"] = "l"
+
+    for nomor, tanaman in enumerate(ensiklopedia.values(), start=1):
+        tanaman = f"{warna_isi}{tanaman['nama']}{Style.reset}"
+        table.add_row([nomor, tanaman])
+
+    print(table)
+
+
+def table_detail(data):
+    warna_judul: str = f"{fore(204)}"
+    warna_isi: str = f"{fore(197)}"
+    table = PrettyTable()
+
+    table.title = f"{warna_judul}DETAIL TANAMAN{Style.reset}"
+    table.field_names = ["Label", "Isi"]
+    table.header = False
+    table.align = "l"
+    table.max_width["Label"] = 15
+    table.min_width["Isi"] = 25
+    table.max_width["Isi"] = 25
+
+    for label, isi in data.items():
+        table.add_row([label, isi])
+
+    print(table)
+
+def pesan_error(teks):
+    print(f"{fore(124)}{teks}{Style.reset}")
+
+def pesan_sukses(teks):
+    print(f"{fore(29)}{teks}{Style.reset}")
+
+def read_ensiklopedia():
+    while True:
+        print("0. Kembali ke menu utama")
+        daftar_tanaman(ensiklopedia)
+        try:
+            detail = int(input("Masukkan nomor tanaman untuk melihat detail: ").strip())
+            if detail >= 1 and detail <= len(ensiklopedia):
+                id_tanaman = list(ensiklopedia.keys()) 
+                tanaman_terpilih = ensiklopedia[id_tanaman[detail - 1]]
+                detail_tanaman = {
+                    "Nama Tanaman": tanaman_terpilih["nama"],
+                    "Nama Ilmiah": tanaman_terpilih["nama_ilmiah"],
+                    "Deskripsi": tanaman_terpilih["deskripsi"],
+                    "Manfaat Tanaman": tanaman_terpilih["manfaat"],
+                }
+                table_detail(detail_tanaman)  
+            elif detail == 0:
+                break
+            else:
+                pesan_error("Koleksi tidak tersedia!")
+        except ValueError:
+            pesan_error("Input Tidak Valid!")
+
+
 def create_ensiklopedia():
     while True:
         try:
-            nama = input("Masukkan nama tanaman             : ")
-            ilmiah = input("Masukkan nama ilmiah tanaman    : ")
-            desk = input("Masukkan deskripsi tanaman        : ")
-            manfaat = input("Masukkan manfaat tanaman       : ")
+            nama    = input("Masukkan nama tanaman          : ").strip()
+            ilmiah  = input("Masukkan nama ilmiah tanaman   : ").strip()
+            desk    = input("Masukkan deskripsi tanaman     : ").strip()
+            manfaat = input("Masukkan manfaat tanaman       : ").strip()
 
             if cek_tanaman(nama):
-                print(f"{fore(124)}Koleksi sudah tersedia, silahkan input ulang!{Style.reset}")
+                pesan_error("Koleksi sudah tersedia, silahkan input ulang!")
                 continue
 
             elif nama == "" or desk == "" or manfaat == "" or ilmiah == "":
-                print(f"{fore(124)}Kolom tidak boleh kosong!{Style.reset}")
+                pesan_error("Kolom tidak boleh kosong!")
                 continue
 
             else:
-                ensiklopedia[id_tanaman()] =({
-                                "nama": nama,
-                                "nama_ilmiah": ilmiah,
-                                "deskripsi": desk, 
-                                "manfaat": manfaat,
-                                "harga": "0",
-                                "stock": "0",
-                                "funfact": "0"
-                                })
+                ensiklopedia[id_tanaman()] = {
+                    "nama": nama,
+                    "nama_ilmiah": ilmiah,
+                    "deskripsi": desk,
+                    "manfaat": manfaat,
+                    "harga": "0",
+                    "stock": "0",
+                    "funfact": "0",
+                }
+                simpan_data()
 
-                with open("ensiklopedia.json", "w", encoding="utf-8") as file:
-                    json.dump(ensiklopedia, file, indent=4, ensure_ascii=False)
-
-                print(f"{fore(29)}Koleksi berhasil di tambahkan!{Style.reset}")
-                break
+            pesan_sukses("Koleksi berhasil di tambahkan!")
+            break
         except ValueError:
-            print(f"{fore(124)}Input Tidak Valid!{Style.reset}")
+            pesan_error("Input Tidak Valid!")
         
 def update_ensiklopedia():
     print("0. Kembali ke menu utama")
     daftar_tanaman(ensiklopedia)
     try:
-        edit = int(input("Masukkan nomor tanaman yang ingin diedit: "))
+        edit = int(input("Masukkan nomor tanaman yang ingin diedit: ").strip())
 
         if edit == 0:
-            pass
+            return
+        
         elif edit >= 1 and edit <= len(ensiklopedia):
             id_tanaman = list(ensiklopedia.keys()) 
             tanaman_edit = ensiklopedia[id_tanaman[edit - 1]]
 
-            print(f"{fore(29)}(Tekan Enter jika tidak ingin mengubah){Style.reset}")
+            pesan_sukses("(Tekan Enter jika tidak ingin mengubah)")
 
             while True:   
-                nama_baru = input(f"Nama Tanaman [{tanaman_edit["nama"]}]: ")
-                ilmiah_baru = input(f"Nama Ilmiah [{tanaman_edit["nama_ilmiah"]}]: ")
-                deskripsi_baru = input(f"Deskripsi [{tanaman_edit["deskripsi"]}]: ")
-                manfaat_baru = input(f"Manfaat Bunga [{tanaman_edit["manfaat"]}]: ")
+                nama_baru      = input(f"Nama Tanaman [{tanaman_edit['nama']}]: ").strip()
+                ilmiah_baru    = input(f"Nama Ilmiah [{tanaman_edit['nama_ilmiah']}]: ").strip()
+                deskripsi_baru = input(f"Deskripsi [{tanaman_edit['deskripsi']}]: ").strip()
+                manfaat_baru   = input(f"Manfaat Tanaman [{tanaman_edit['manfaat']}]: ").strip()
+
+# yakin ingin mengubah daftar
 
                 if nama_baru != "" and cek_tanaman(nama_baru):
-                    print(f"{fore(124)}Koleksi sudah tersedia, silahkan input ulang!{Style.reset}")
+                    pesan_error("Koleksi sudah tersedia, silahkan input ulang!")
                     continue
 
                 if nama_baru != "":
@@ -154,41 +168,68 @@ def update_ensiklopedia():
                 if manfaat_baru != "":
                     tanaman_edit["makna"] = manfaat_baru
 
-                with open("ensiklopedia.json", "w", encoding="utf-8") as file:
-                    json.dump(ensiklopedia, file, indent=4, ensure_ascii=False)
+                simpan_data()
 
-                print(f"{fore(29)}Koleksi berhasil diedit!{Style.reset}")
+                pesan_sukses("Koleksi berhasil diedit!")
                 break
         else:
-            print(f"{fore(124)}Koleksi tidak tersedi!{Style.reset}")
+            pesan_error("Koleksi tidak tersedi!")
     except ValueError:
-        print(f"{fore(124)}Input Tidak Valid!{Style.reset}")
+        pesan_error("Input Tidak Valid!")
 
 def delete_ensiklopedia():
     print("0. Kembali ke menu utama")
     daftar_tanaman(ensiklopedia)
     try:
-        hapus = int(input("Masukkan nomor tanaman yang ingin dihapus: "))
+        hapus = int(input("Masukkan nomor tanaman yang ingin dihapus: ").strip())
         if hapus == 0:
-            pass
+            return
+        
         elif hapus >= 1 and hapus <= len(ensiklopedia):
             id_tanaman = list(ensiklopedia.keys()) 
             tanaman_hapus = ensiklopedia[id_tanaman[hapus - 1]]
-            konfirmasi = input(f"Yakin hapus '{tanaman_hapus['nama']}'(y/t)?: ").lower()
+            konfirmasi = input(f"Yakin hapus '{tanaman_hapus['nama']}'(y/t)?: ").strip().lower()
             if konfirmasi == "y":
                 ensiklopedia.pop(id_tanaman[hapus - 1])
-
-                with open("ensiklopedia.json", "w", encoding="utf-8") as file:
-                    json.dump(ensiklopedia, file, indent=4, ensure_ascii=False)
-                
-                print(f"{fore(29)}Koleksi berhasil dihapus!{Style.reset}")
+                simpan_data()
+                pesan_sukses("Koleksi berhasil dihapus!")
             elif konfirmasi == "t":
-                print(f"{fore(29)}Penghapusan dibatalkan.{Style.reset}")
+                pesan_sukses("Penghapusan dibatalkan.")
             else:
-                print(f"{fore(124)}Input tidak valid! pilih antara y/t{Style.reset}")
+                pesan_error("Input tidak valid! pilih antara y/t")
         else:
-            print(f"{fore(124)}Koleksi tidak tersedi!{Style.reset}")
+            pesan_error("Koleksi tidak tersedia!")
     except ValueError:
-        print(f"{fore(124)}Input Tidak Valid!{Style.reset}")
+        pesan_error("Input Tidak Valid!")
 
-# delete_ensiklopedia()
+def search_awal(data, keyword):
+    keyword = keyword.lower()
+    return {
+        id_: info
+        for id_, info in data.items()
+        if info["nama"].lower().startswith(keyword)
+    }
+
+def search_ensiklopedia():
+    while True:
+        print("0. Kembali ke menu utama")
+        keyword = input("Cari nama tanaman (ketik 0 untuk kembali): ").strip()
+
+        if keyword == "0":
+            break
+
+        hasil = search_awal(ensiklopedia, keyword)
+
+        if not hasil:
+            pesan_error("Tanaman tidak ditemukan.")
+            continue
+
+        for data in hasil.values():
+            detail_tanaman = {
+                "Nama Tanaman": data["nama"],
+                "Nama Ilmiah": data["nama_ilmiah"],
+                "Deskripsi": data["deskripsi"],
+                "Manfaat Tanaman": data["manfaat"],
+            }
+            table_detail(detail_tanaman)
+
