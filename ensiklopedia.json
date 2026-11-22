@@ -6,6 +6,24 @@
         "manfaat": "Mantap",
         "harga": "0",
         "stock": "0",
-        "funfact": "123"
+        "funfact": "0"
+    },
+    "id2": {
+        "nama": "Jambu",
+        "nama_ilmiah": "Bayamism",
+        "deskripsi": "Jokerim",
+        "manfaat": "Mantap",
+        "harga": "0",
+        "stock": "0",
+        "funfact": "0"
+    },
+    "id3": {
+        "nama": "Kangkung",
+        "nama_ilmiah": "Bayamism",
+        "deskripsi": "Jokerim",
+        "manfaat": "Mantap",
+        "harga": "0",
+        "stock": "0",
+        "funfact": "apaan"
     }
 }
