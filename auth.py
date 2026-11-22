@@ -1,8 +1,8 @@
-
 import os
 import json
 from colored import fore, Style
 
+# belum di baikin
 
 def load_data():
     if not os.path.exists("data_user.json"):
@@ -67,4 +67,4 @@ def login(percobaan = 0):
     print(f"{fore(124)}Username atau Password salah! Sisa percobaan: {2 - percobaan}{Style.reset}")
     return login(percobaan + 1)
 
-login()
+regis()
