@@ -1,8 +1,8 @@
-
 import os
 import json
 from colored import fore, Style
 
+# belum di baikin
 
 def load_data():
     if not os.path.exists("data_user.json"):
