@@ -67,4 +67,4 @@ def login(percobaan = 0):
     print(f"{fore(124)}Username atau Password salah! Sisa percobaan: {2 - percobaan}{Style.reset}")
     return login(percobaan + 1)
 
-regis()
+# login()
