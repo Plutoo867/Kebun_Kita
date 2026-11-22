@@ -118,8 +118,6 @@ def edit_data():
         else:
             print(f"Tanaman {tanaman} tidak ditemukan dalam daftar stock!")
             return
-        
-    
     
 def menu_admin():
     pertanyaan = [
