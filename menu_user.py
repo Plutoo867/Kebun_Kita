@@ -2,7 +2,7 @@ import os, inquirer
 from crud_jual_beli import beli_tanaman
 from crud_ensiklopedia import read_ensiklopedia
 from crud_funfact import random_funfact
-from crud_ensiklopedia import load_data
+from crud_ensiklopedia import ensiklopedia
 
 def menu_user():
     while True:
@@ -27,4 +27,4 @@ def menu_user():
         elif jawaban["menu"].startswith("2."):
             read_ensiklopedia()
         elif jawaban["menu"].startswith("3."):
-            random_funfact(load_data())
+            random_funfact(ensiklopedia)
