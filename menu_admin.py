@@ -2,7 +2,7 @@ import os
 import inquirer
 from crud_jual_beli import read_data, create_data, edit_data, delete_data
 from crud_ensiklopedia import read_ensiklopedia, create_ensiklopedia, update_ensiklopedia, delete_ensiklopedia, search_ensiklopedia
-from crud_funfact import create_funfact, update_funfact, delete_funfact
+from crud_funfact import create_funfact, update_funfact, delete_funfact, read_funfact
 
 def menu_admin():
     while True:
@@ -68,21 +68,24 @@ def menu_funfact():
                 "menu",
                 message="Pilih Menu Funfact",
                 choices=[
-                    "1. Tambah Funfact",
-                    "2. Ubah Funfact",
-                    "3. Hapus Funfact",
-                    "4. Kembali ke Menu Admin",
+                    "1. Lihat Funfact",
+                    "2. Tambah Funfact",
+                    "3. Ubah Funfact",
+                    "4. Hapus Funfact",
+                    "5. Kembali ke Menu Admin",
                 ],
             )
         ])
-        if jawaban is None or jawaban["menu"].startswith("4."):
+        if jawaban is None or jawaban["menu"].startswith("5."):
             break
 
         if jawaban["menu"].startswith("1."):
-            create_funfact()
+            read_funfact()
         elif jawaban["menu"].startswith("2."):
-            update_funfact()
+            create_funfact()
         elif jawaban["menu"].startswith("3."):
+            update_funfact()
+        elif jawaban["menu"].startswith("4."):
             delete_funfact()
 
 def menu_jual_beli():

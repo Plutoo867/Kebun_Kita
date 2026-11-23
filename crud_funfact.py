@@ -33,6 +33,32 @@ def random_funfact():
     else:
         print("Tidak ada funfact yang tersedia")
 
+def read_funfact():
+    id_kosong = []
+
+    for id_data in ensiklopedia:
+        if ensiklopedia[id_data]["funfact"] != "0":
+            id_kosong.append(id_data)
+
+    if not id_kosong:
+        print("Tidak ada tanaman yang memiliki funfact!")
+        return
+
+    table = PrettyTable()
+    table.field_names = ("No", "Nama Tanaman", "Funfact")
+    no = 1
+    for id_data in id_kosong:
+        tanaman = ensiklopedia[id_data]["nama"]
+        funfact = ensiklopedia[id_data]["funfact"]
+        table.add_row([
+            no,
+            tanaman,
+            funfact
+        ])
+        no += 1
+
+    print(table)
+
 def create_funfact():
     id_kosong = []
 
@@ -217,4 +243,4 @@ def update_funfact():
         except ValueError:
             print("Input harus berupa angka!")
 
-random_funfact()
+read_funfact()
