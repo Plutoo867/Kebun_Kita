@@ -1,29 +1,41 @@
 {
     "id1": {
         "nama": "Bayam",
-        "nama_ilmiah": "Bayamism",
-        "deskripsi": "Jokerim",
+        "nama_ilmiah": "Aamaranthus spp",
+        "deskripsi": "Bayam Hijau",
         "manfaat": "Mantap",
         "harga": "0",
         "stock": "0",
-        "funfact": "0"
+        "funfact": "lemao pisan kang",
+        "makna": "Kaya akan Vitamin A, C, E dan K"
     },
     "id2": {
         "nama": "Jambu",
-        "nama_ilmiah": "Bayamism",
-        "deskripsi": "Jokerim",
+        "nama_ilmiah": "Psidium Guajava",
+        "deskripsi": "Jambu Biji",
         "manfaat": "Mantap",
-        "harga": "0",
-        "stock": "0",
-        "funfact": "0"
+        "harga": "10000",
+        "stock": 30,
+        "funfact": "0",
+        "makna": "Enak dan Bergizi"
     },
     "id3": {
         "nama": "Kangkung",
-        "nama_ilmiah": "Bayamism",
-        "deskripsi": "Jokerim",
+        "nama_ilmiah": "Ipomoea Aquatica",
+        "deskripsi": "Kangkung Hijau",
         "manfaat": "Mantap",
         "harga": 15000000,
-        "stock": 10,
+        "stock": 0,
+        "funfact": "0",
+        "makna": "Menjaga Kesehatan Mata & Daya Tahan Tubuh"
+    },
+    "id4": {
+        "nama": "Jagung",
+        "nama_ilmiah": "Zeamays L.",
+        "deskripsi": "Jagung Manis",
+        "manfaat": "Kaya Serat & Karbohidrat",
+        "harga": "0",
+        "stock": "0",
         "funfact": "0"
     }
 }
