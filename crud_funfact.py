@@ -4,7 +4,7 @@ from prettytable import PrettyTable
 
 ensiklopedia = load_data()
 
-def random_funfact(ensiklopedia):
+def random_funfact():
     funfacts = []
 
     for id_data in ensiklopedia:
@@ -33,7 +33,7 @@ def random_funfact(ensiklopedia):
     else:
         print("Tidak ada funfact yang tersedia")
 
-def create_funfact(ensiklopedia):
+def create_funfact():
     id_kosong = []
 
     for id_data in ensiklopedia:
@@ -98,7 +98,7 @@ def create_funfact(ensiklopedia):
             print("Error: Input harus berupa angka!")
 
 
-def delete_funfact(ensiklopedia):
+def delete_funfact():
     id_dengan_funfact = []
 
     for id_data in ensiklopedia:
@@ -153,7 +153,7 @@ def delete_funfact(ensiklopedia):
             print("Input harus berupa angka!")
 
 
-def update_funfact(ensiklopedia):
+def update_funfact():
     id_dengan_funfact = []
 
     for id_data in ensiklopedia:
@@ -217,4 +217,4 @@ def update_funfact(ensiklopedia):
         except ValueError:
             print("Input harus berupa angka!")
 
-random_funfact(ensiklopedia)
+random_funfact()

@@ -23,7 +23,7 @@ def cek_tanaman(nama):
             return False
 
 
-def read_data(ensiklopedia):
+def read_data():
     id_kosong = []
 
     for id_data in ensiklopedia:
@@ -51,7 +51,7 @@ def read_data(ensiklopedia):
 
     print(table)
 
-def create_data(ensiklopedia):
+def create_data():
     id_kosong = []
     
     for id_data in ensiklopedia:
@@ -92,7 +92,7 @@ def create_data(ensiklopedia):
             konfirmasi = [
                 inquirer.List(
                     "konfirmasi",
-                    message="Apakah Anda yakin ingin menghapus data ini?",
+                    message="Apakah Anda yakin ingin menambah data ini?",
                     choices=["Ya", "Tidak"],
                     )
                 ]
@@ -110,7 +110,7 @@ def create_data(ensiklopedia):
             print("Harga dan stock harus berupa angka!")
     
         
-def delete_data(ensiklopedia):
+def delete_data():
     id_dengan_harga_dan_stock = []
     for id_data in ensiklopedia:
         if ensiklopedia[id_data]["harga"] != "0" and ensiklopedia[id_data]["stock"] != "0":
@@ -157,7 +157,7 @@ def delete_data(ensiklopedia):
         except ValueError:
             print("Harga dan stock harus berupa angka!")
 
-def edit_data(ensiklopedia):
+def edit_data():
     id_dengan_harga_dan_stock = []
     for id_data in ensiklopedia:
         if ensiklopedia[id_data]["harga"] != "0" and ensiklopedia[id_data]["stock"] != "0":
@@ -212,7 +212,7 @@ def edit_data(ensiklopedia):
             konfirmasi = [
                     inquirer.List(
                         "konfirmasi",
-                        message="Apakah Anda yakin ingin menghapus funfact ini?",
+                        message="Apakah Anda yakin ingin merubah data ini?",
                         choices=["Ya", "Tidak"],
                         )
                     ]
@@ -229,7 +229,7 @@ def edit_data(ensiklopedia):
         except ValueError:
             print("Masukkan nomor berupa angka!")
 
-read_data(ensiklopedia)
+read_data()
 
 ENSIKLOPEDIA_FILE = "ensiklopedia.json"
 REKAP_FILE = "rekap.json"

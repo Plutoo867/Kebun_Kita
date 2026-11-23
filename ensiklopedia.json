@@ -2,12 +2,12 @@
     "id1": {
         "nama": "Bayam",
         "nama_ilmiah": "Aamaranthus spp",
-        "deskripsi": "Bayam Hijau",
+        "deskripsi": "Bayam Merah",
         "manfaat": "Mantap",
         "harga": "0",
         "stock": "0",
-        "funfact": "lemao pisan kang",
-        "makna": "Kaya akan Vitamin A, C, E dan K"
+        "funfact": "Slibaw",
+        "makna": "Enak & Bergizi"
     },
     "id2": {
         "nama": "Jambu",
@@ -34,8 +34,8 @@
         "nama_ilmiah": "Zeamays L.",
         "deskripsi": "Jagung Manis",
         "manfaat": "Kaya Serat & Karbohidrat",
-        "harga": "0",
-        "stock": "0",
+        "harga": 10000,
+        "stock": 50,
         "funfact": "0"
     }
 }
