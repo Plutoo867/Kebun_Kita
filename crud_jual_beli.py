@@ -27,7 +27,7 @@ def read_data(ensiklopedia):
     id_kosong = []
 
     for id_data in ensiklopedia:
-        if ensiklopedia[id_data]["harga"] == "0" and ensiklopedia[id_data]["stock"] == "0":
+        if ensiklopedia[id_data]["harga"] != "0" and ensiklopedia[id_data]["stock"] != "0":
             id_kosong.append(id_data)
 
     if not id_kosong:
