@@ -1,4 +1,4 @@
-import inquirer
+import os, inquirer
 from crud_jual_beli import beli_tanaman
 from crud_ensiklopedia import read_ensiklopedia
 from crud_funfact import random_funfact
@@ -6,6 +6,7 @@ from crud_ensiklopedia import load_data
 
 def menu_user():
     while True:
+        os.system("cls" if os.name == "nt" else "clear")
         jawaban = inquirer.prompt([
             inquirer.List(
                 "menu",

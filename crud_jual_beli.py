@@ -1,6 +1,6 @@
-import json, inquirer, os, inquirer, datetime 
+import json, inquirer, os, inquirer
+from datetime import datetime
 from prettytable import PrettyTable
-
 
 def load_data():
     if not os.path.exists("ensiklopedia.json"):
@@ -21,7 +21,6 @@ def cek_tanaman(nama):
         else:
             print("Bunga tidak ditemukan dalam daftar stock!")
             return False
-
 
 
 def read_data(ensiklopedia):
@@ -235,6 +234,12 @@ read_data(ensiklopedia)
 ENSIKLOPEDIA_FILE = "ensiklopedia.json"
 REKAP_FILE = "rekap.json"
 
+def format_rp(nominal):
+    return f"Rp{int(nominal):,}".replace(",", ".")
+
+def bersihkan_terminal():
+    os.system("cls" if os.name == "nt" else "clear")
+
 def muat_ensiklopedia():
     if not os.path.exists(ENSIKLOPEDIA_FILE):
         return {}
@@ -263,48 +268,71 @@ def simpan_rekap(data_rekap):
     with open(REKAP_FILE, "w", encoding="utf-8") as file:
         json.dump(data_rekap, file, indent=4, ensure_ascii=False)
 
+def tampilkan_struk(keranjang_item, total_belanja, waktu_transaksi):
+    lebar = 44
+    print("\n" + "=" * lebar)
+    print("STRUK PEMBELIAN - KEBUN KITA".center(lebar))
+    print(f"Waktu : {waktu_transaksi}".ljust(lebar))
+    print("=" * lebar)
+    for item in keranjang_item:
+        nama = item["nama"]
+        jumlah = item["jumlah"]
+        harga = format_rp(item["harga"])
+        subtotal = format_rp(item["subtotal"])
+        print(f"{nama} ({jumlah} x {harga})")
+        print("  Subtotal".ljust(lebar - 14) + f": {subtotal}")
+    print("-" * lebar)
+    print("TOTAL BELANJA".ljust(lebar - 14) + f": {format_rp(total_belanja)}")
+    print("=" * lebar)
+    print("Terima kasih telah berbelanja!".center(lebar))
+    print("=" * lebar)
+
 def beli_tanaman():
     while True:
+        bersihkan_terminal()
         ensiklopedia = muat_ensiklopedia()
         daftar_id = list(ensiklopedia.keys())
 
         if not daftar_id:
             print("\nBelum ada data tanaman di ensiklopedia.json.")
+            input("\nTekan Enter untuk kembali...")
             return
 
         keranjang_item = []
         total_belanja = 0
 
         while True:
-            print("\nBerikut daftar tanaman yang bisa di pesan:")
+            bersihkan_terminal()
+            print("Berikut daftar tanaman yang bisa di pesan:")
             table = PrettyTable()
             table.field_names = ["No", "Nama Tanaman", "Harga", "Stock"]
 
-            pilihan_menu = []
             for no, id_tanaman in enumerate(daftar_id, start=1):
                 info = ensiklopedia[id_tanaman]
                 nama = info.get("nama", "-")
                 harga = int(info.get("harga", 0))
                 stock = int(info.get("stock", 0))
-                table.add_row([no, nama, f"Rp{harga}", stock])
-                pilihan_menu.append(f"{no}. {nama} (Rp{harga} | Stock: {stock})")
+                table.add_row([no, nama, format_rp(harga), stock])
 
             print(table)
-            pilihan_menu.append("0. Selesai / Kembali")
+            print("0. Selesai / Kembali")
 
-            jawaban_pilih = inquirer.prompt([
-                inquirer.List(
-                    "tanaman",
-                    message="Pilih nomor tanaman yang ingin dibeli",
-                    choices=pilihan_menu,
-                )
-            ])
+            try:
+                nomor = int(input("Pilih nomor tanaman yang ingin dibeli: ").strip())
+            except ValueError:
+                print("Nomor harus berupa angka! Silakan coba lagi.")
+                input("\nTekan Enter untuk melanjutkan...")
+                continue
 
-            if jawaban_pilih is None or jawaban_pilih["tanaman"].startswith("0."):
+            if nomor == 0:
                 break
 
-            idx = pilihan_menu.index(jawaban_pilih["tanaman"])
-            id_terpilih = daftar_id[idx]
+            if not (1 <= nomor <= len(daftar_id)):
+                print("Pilihan nomor tanaman tidak tersedia! Silakan coba lagi.")
+                input("\nTekan Enter untuk melanjutkan...")
+                continue
+
+            id_terpilih = daftar_id[nomor - 1]
             info_terpilih = ensiklopedia[id_terpilih]
 
             nama_tanaman = info_terpilih.get("nama", "Tanaman")
@@ -313,20 +341,24 @@ def beli_tanaman():
 
             if stok_saat_ini <= 0:
                 print(f"Maaf, stock tanaman {nama_tanaman} sedang habis!")
+                input("\nTekan Enter untuk melanjutkan...")
                 continue
 
             try:
                 jumlah_beli = int(input("Input jumlah yg ingin di beli: ").strip())
             except ValueError:
                 print("Jumlah harus berupa angka! Silakan coba lagi.")
+                input("\nTekan Enter untuk melanjutkan...")
                 continue
 
             if jumlah_beli <= 0:
                 print("Jumlah harus lebih dari 0! Silakan coba lagi.")
+                input("\nTekan Enter untuk melanjutkan...")
                 continue
 
             if jumlah_beli > stok_saat_ini:
                 print(f"Stock tanaman tidak mencukupi. Stock saat ini: {stok_saat_ini}.")
+                input("\nTekan Enter untuk melanjutkan...")
                 continue
 
             subtotal = jumlah_beli * harga_satuan
@@ -341,43 +373,42 @@ def beli_tanaman():
                 "subtotal": subtotal,
             })
 
-            print(f"Berhasil memasukkan {jumlah_beli} {nama_tanaman} (Subtotal: Rp{subtotal}).")
+            print(
+                f"Berhasil memasukkan {jumlah_beli} {nama_tanaman} "
+                f"(Subtotal: {format_rp(subtotal)})."
+            )
 
-            jawaban_tambah = inquirer.prompt([
-                inquirer.Confirm(
-                    "tambah_lain",
-                    message="Ingin input tanaman lain?",
-                    default=True,
-                )
-            ])
-            if jawaban_tambah is None or not jawaban_tambah["tambah_lain"]:
+            tambah_lain = input("Ingin input tanaman lain? (y/n): ").strip().lower()
+            if tambah_lain == "n":
+                break
+            elif tambah_lain != "y":
+                print("Input tidak dikenali, dianggap tidak menambah tanaman lain.")
                 break
 
+        bersihkan_terminal()
         if keranjang_item:
             simpan_ensiklopedia(ensiklopedia)
 
+            waktu_transaksi = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             data_rekap = muat_rekap()
             data_rekap.append({
-                "waktu": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                "waktu": waktu_transaksi,
                 "items": keranjang_item,
                 "total_belanja": total_belanja,
             })
             simpan_rekap(data_rekap)
 
-            print("\nBerikut adalah total belanja anda:")
-            for item in keranjang_item:
-                print(f"- {item['nama']} x{item['jumlah']} = Rp{item['subtotal']}")
-            print(f"Total Belanja: Rp{total_belanja}")
+            tampilkan_struk(keranjang_item, total_belanja, waktu_transaksi)
         else:
             print("\nTidak ada tanaman yang dibeli.")
 
         jawaban_transaksi = inquirer.prompt([
-            inquirer.Confirm(
+            inquirer.List(
                 "transaksi_lagi",
                 message="Ingin melakukan pembelian lagi?",
-                default=False,
+                choices=["Ya", "Tidak"],
             )
         ])
-        if jawaban_transaksi is None or not jawaban_transaksi["transaksi_lagi"]:
+        if jawaban_transaksi is None or jawaban_transaksi["transaksi_lagi"] != "Ya":
             print("Terima kasih telah berbelanja di Kebun Kita!")
             break
