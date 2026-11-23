@@ -19,7 +19,6 @@ def simpan_data():
 
 
 ensiklopedia = load_data()
-id_terakhir = len(ensiklopedia)
 
 def cek_tanaman(nama):
     for tanaman in ensiklopedia.values():
@@ -28,7 +27,7 @@ def cek_tanaman(nama):
     return False
 
 def id_tanaman():
-    global id_terakhir
+    id_terakhir = len(ensiklopedia)
     id_terakhir += 1
     return f"id{id_terakhir}"
 
