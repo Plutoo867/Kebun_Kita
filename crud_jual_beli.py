@@ -1,124 +1,236 @@
-import json, inquirer, os 
-from datetime import datetime
+import json, inquirer, os, inquirer, datetime 
 from prettytable import PrettyTable
 
-def cek_bunga():
-    with open("ensiklopedia.json", "r") as file:
-        data = json.load(file)
 
-    for item in data["kamus_tanaman"]:
-       if item == "bunga":
-           print("Bunga ditemukan dalam daftar stock!")
-           return True
-       else:
-           print("Bunga tidak ditemukan dalam daftar stock!")
-           return False
+def load_data():
+    if not os.path.exists("ensiklopedia.json"):
+        return {}
+    try:
+        with open("ensiklopedia.json", "r", encoding="utf-8") as file:
+            return json.load(file)
+    except json.JSONDecodeError:
+        return {}
 
-def lihat_stok():
-    with open("ensiklopedia.json","r") as file:
-        data = json.load(file)
+ensiklopedia = load_data()
+
+def cek_tanaman(nama):
+    for item in ensiklopedia.values():
+        if nama.lower() == item["nama"].lower():
+            print("Bunga ditemukan dalam daftar stock!")
+            return True
+        else:
+            print("Bunga tidak ditemukan dalam daftar stock!")
+            return False
+
+
+
+def read_data(ensiklopedia):
+    id_kosong = []
+
+    for id_data in ensiklopedia:
+        if ensiklopedia[id_data]["harga"] == "0" and ensiklopedia[id_data]["stock"] == "0":
+            id_kosong.append(id_data)
+
+    if not id_kosong:
+        print("Tidak ada tanaman yang bisa dijual!")
+        return
+
     table = PrettyTable()
-    table.field_names = ["No", "Nama Barang", "Harga", "Stock"]
-    for no, item in enumerate(data["kamus_tanaman"], start=1):
+    table.field_names = ("No", "Nama Tanaman", "Harga", "Stock")
+    no = 1
+    for id_data in id_kosong:
+        tanaman = ensiklopedia[id_data]["nama"]
+        harga = ensiklopedia[id_data]["harga"]
+        stock = ensiklopedia[id_data]["stock"]
         table.add_row([
             no,
-            item["nama_tanaman"], 
-            item["harga"], 
-            item["stock"]])  
-    print(table)
-    
-def tambah_data():
-    with open("ensiklopedia.json", "r") as file:
-        data = json.load(file)
-    tanaman = input("Tambahkan daftar tanaman: ").strip().lower()
-    for item in data["kamus_tanaman"]:
-        if item["harga"] == tanaman.lower():
-            if item["stock"] == 0 and item["harga"] == 0:
-                print("Berikut daftar tanaman dan stock: ")
-                table = PrettyTable()
-                table.field_names = ["Nama Barang", "Harga", "Stock"]    
-                for item in data["kamus_tanaman"]:
-                    table.add_row([
-                        item["nama_tanaman"],
-                        item["harga"], 
-                        item["stock"]
-                        ]
-                        )
-                print(table) 
-                try:  
-                    harga = int(input("Harga tanaman: ").strip())
-                    stock = int(input("Stok tanaman: ").strip())
-                    for item in data["kamus_tanaman"]:
-                        if harga == "" or stock == "":
-                            print("Data tidak boleh kosong!")
-                            return
-                    tanaman_baru = {
-                        "nama_tanaman": tanaman,
-                        "harga": harga,
-                        "stock": stock
-                    }
-                    data["kamus_tanaman"].append(tanaman_baru)
-                    with open("ensiklopedia.json", "w") as file:
-                        json.dump(data, file)
-                    print(f"Tanaman {tanaman} berhasil ditambahkan ke daftar stock!")
-                except ValueError:
-                    print("Harga dan stock harus berupa angka!")
-                    return
-                return 
-            else:
-                print(f"Tanaman {tanaman} sudah ada dalam daftar stok!")
-                return  
-        else:
-            print(f"Tanaman {tanaman} sudah ada dalam daftar stok!")
-            return
+            tanaman,
+            harga,
+            stock
+        ])
+        no += 1
 
-def hapus_data():
-    with open("ensiklopedia.json", "r") as file:
-        data = json.load(file)
-    print("Berikut daftar tanaman dan stock: ")
-    table = PrettyTable()
-    table.field_names = ["Nama Barang", "Harga", "Stock"]
-    for item in data["kamus_tanaman"]:
-        table.add_row([item["nama_tanaman"],item["harga"], item["stock"]])
     print(table)
+
+def create_data(ensiklopedia):
+    id_kosong = []
     
-    tanaman = input("Masukkan nama tanaman yang ingin dihapus: ").strip().lower()
-    for item in data["kamus_tanaman"]:
-        if item["nama_tanaman"].lower() == tanaman.lower():
-            data["kamus_tanaman"].remove(item)
-            with open("ensiklopedia.json", "w") as file:
-                json.dump(data, file)
-            print(f"Tanaman {tanaman} berhasil dihapus dari daftar stock!")
-            return
-    print(f"Tanaman {tanaman} tidak ditemukan dalam daftar stock!")
+    for id_data in ensiklopedia:
+        if ensiklopedia[id_data]["harga"] == "0" and ensiklopedia[id_data]["stock"] == "0":
+            id_kosong.append(id_data)     
     
+    if not id_kosong:
+        print("Tidak ada tanaman yang bisa dijual!")
+        return
     
-def edit_data():
-    with open("ensiklopedia.json", "r") as file:
-        data = json.load(file)
-    print("Berikut daftar tanaman dan stock: ")
-    table = PrettyTable()
-    table.field_names = ["Nama Barang", "Harga", "Stock"]
-    for item in data["kamus_tanaman"]:
-        table.add_row([item["nama_tanaman"],item["harga"], item["stock"]])
-    print(table)
-    tanaman = input("Masukkan nama tanaman yang ingin diedit: ").strip().lower()
-    for item in data["kamus_tanaman"]:
-        if item["nama_tanaman"].lower() == tanaman.lower(): 
-            harga_baru = input("Masukkan harga baru: ").strip()
-            stok_baru = input("Masukkan stock baru: ").strip()
-            data_baru = {
-                "nama_tanaman": item["nama_tanaman"],
-                "harga": int(harga_baru),
-                "stock": int(stok_baru)
-            }
-            data["kamus_tanaman"].append(data_baru)
-            with open("ensiklopedia.json", "w") as file:
-                json.dump(data, file)
-            print(f"Tanaman {tanaman} berhasil diedit!")
-        else:
-            print(f"Tanaman {tanaman} tidak ditemukan dalam daftar stock!")
-            return
+    while True:
+        print("0. Kembali ke Menu Utama")
+        print("Daftar Tanaman Yang Bisa Dijual")
+        
+        for nomor, id_data in enumerate(id_kosong, start=1):
+            print(f"{nomor}. {ensiklopedia[id_data]['nama']}")
+            
+        try:
+            pilihan = int(input("Pilih nomor tanaman: "))
+            
+            if pilihan == 0:
+                print("Kembali ke menu utama")
+                return
+            elif pilihan < 1 or pilihan > len(id_kosong):
+                print("Nomor tanaman tidak tersedia")
+                continue
+            
+            id_pilihan = id_kosong[pilihan - 1]
+            
+            harga = int(input("Masukkan harga tanaman: "))
+            stock = int(input("Masukkan stock tanaman: "))
+            if harga == "" and stock == "":
+                print("Harga dan stock tidak boleh kosong!")
+                continue
+            elif harga < 1000 or stock < 0:
+                print("Harga minimal 1000!")
+                continue
+            konfirmasi = [
+                inquirer.List(
+                    "konfirmasi",
+                    message="Apakah Anda yakin ingin menghapus data ini?",
+                    choices=["Ya", "Tidak"],
+                    )
+                ]
+            jawaban = inquirer.prompt(konfirmasi)
+            if jawaban["konfirmasi"] == "Ya":
+                ensiklopedia[id_pilihan]["harga"] = harga
+                ensiklopedia[id_pilihan]["stock"] = stock
+                with open("ensiklopedia.json", "w", encoding="utf-8") as file:
+                    json.dump(ensiklopedia, file, indent=4, ensure_ascii=False)
+                print("data berhasil dibuat")
+                return
+            elif jawaban["konfirmasi"] == "Tidak":
+                print("data tidak dibuat")
+        except ValueError:
+            print("Harga dan stock harus berupa angka!")
+    
+        
+def delete_data(ensiklopedia):
+    id_dengan_harga_dan_stock = []
+    for id_data in ensiklopedia:
+        if ensiklopedia[id_data]["harga"] != "0" and ensiklopedia[id_data]["stock"] != "0":
+            id_dengan_harga_dan_stock.append(id_data)     
+    
+    if not id_dengan_harga_dan_stock:
+        print("Tidak ada penjualan yang bisa dihapus!")
+        return
+    while True:
+        print("0. Kembali ke Menu Utama")
+        print("Daftar Penjualan Yang Bisa Dihapus")
+        
+        for nomor, id_data in enumerate(id_dengan_harga_dan_stock, start=1):
+            print(f"{nomor}. {ensiklopedia[id_data]['nama']}")
+            
+        try:
+            pilihan = int(input("Pilih nomor tanaman: "))            
+            if pilihan == 0:
+                print("Kembali ke menu utama")
+                return
+            elif pilihan < 1 or pilihan > len(id_dengan_harga_dan_stock):
+                print("Nomor tanaman tidak tersedia")
+                continue
+            
+            id_pilihan = id_dengan_harga_dan_stock[pilihan - 1]
+            
+            konfirmasi = [
+                inquirer.List(
+                    "konfirmasi",
+                    message="Apakah Anda yakin ingin menghapus data ini?",
+                    choices=["Ya", "Tidak"],
+                    )
+                ]
+            jawaban = inquirer.prompt(konfirmasi)
+            if jawaban["konfirmasi"] == "Ya":
+                ensiklopedia[id_pilihan]["harga"] = "0"
+                ensiklopedia[id_pilihan]["stock"] = "0"                
+                with open("ensiklopedia.json", "w", encoding="utf-8") as file:
+                    json.dump(ensiklopedia, file, indent=4, ensure_ascii=False)
+                print("data berhasil dihapus!")
+                return
+            elif jawaban["konfirmasi"] == "Tidak":
+                print("data tidak dihapus")
+        except ValueError:
+            print("Harga dan stock harus berupa angka!")
+
+def edit_data(ensiklopedia):
+    id_dengan_harga_dan_stock = []
+    for id_data in ensiklopedia:
+        if ensiklopedia[id_data]["harga"] != "0" and ensiklopedia[id_data]["stock"] != "0":
+            id_dengan_harga_dan_stock.append(id_data)
+    if not id_dengan_harga_dan_stock:
+        print("Tidak ada penjualan yang bisa diedit!")
+        return
+
+    while True:
+        print("0. Kembali ke Menu Utama")
+        print("Daftar Penjualan Yang Bisa Diedit")
+        for nomor, id_data in enumerate(id_dengan_harga_dan_stock, start=1):
+            print(f"{nomor}. {ensiklopedia[id_data]['nama']}")
+        try:
+            edit = int(input("Masukkan nomor tanaman yang ingin diedit: "))
+            if edit == 0:
+                print("Kembali ke menu utama")
+                return
+            if edit < 1 or edit > len(id_dengan_harga_dan_stock):
+                print("Nomor tanaman tidak valid!")
+                continue
+
+            id_pilihan = id_dengan_harga_dan_stock[edit - 1]
+
+            while True:
+                harga_input = int(input("Masukkan harga yang baru (kosongkan jika tidak ingin mengubah): "))
+                if harga_input == "":
+                    harga_baru = ensiklopedia[id_pilihan]["harga"]
+                    break
+                try:
+                    harga_baru = int(harga_input)
+                    if harga_baru < 1000:
+                        print("Harga minimal 1000!")
+                        continue
+                    break
+                except ValueError:
+                    print("Harga hanya boleh berupa angka!")
+            while True:
+                stock_input = int(input("Masukkan stock yang baru (kosongkan jika tidak ingin mengubah): "))
+                if stock_input == "":
+                    stock_baru = ensiklopedia[id_pilihan]["stock"]
+                    break
+                try:
+                    stock_baru = int(stock_input)
+                    if stock_baru < 0:
+                        print("Stock tidak boleh negatif!")
+                        continue
+                    break
+                except ValueError:
+                    print("Stock hanya boleh berupa angka!")
+                    
+            konfirmasi = [
+                    inquirer.List(
+                        "konfirmasi",
+                        message="Apakah Anda yakin ingin menghapus funfact ini?",
+                        choices=["Ya", "Tidak"],
+                        )
+                    ]
+            jawaban = inquirer.prompt(konfirmasi)
+            if jawaban["konfirmasi"] == "Ya":
+                ensiklopedia[id_pilihan]["harga"] = harga_baru
+                ensiklopedia[id_pilihan]["stock"] = stock_baru
+                with open("ensiklopedia.json", "w", encoding="utf-8") as file:
+                    json.dump(ensiklopedia, file, indent=4, ensure_ascii=False)
+                print("Data tanaman berhasil diperbarui!")
+                return
+            elif jawaban["konfirmasi"] == "Tidak":
+                print("data tidak diedit")
+        except ValueError:
+            print("Masukkan nomor berupa angka!")
+
+read_data(ensiklopedia)
 
 ENSIKLOPEDIA_FILE = "ensiklopedia.json"
 REKAP_FILE = "rekap.json"

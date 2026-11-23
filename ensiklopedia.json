@@ -22,8 +22,8 @@
         "nama_ilmiah": "Bayamism",
         "deskripsi": "Jokerim",
         "manfaat": "Mantap",
-        "harga": "0",
-        "stock": "0",
+        "harga": 15000000,
+        "stock": 10,
         "funfact": "0"
     }
 }
