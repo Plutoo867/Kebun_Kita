@@ -1,8 +1,8 @@
-import os, inquirer
+import os 
+import inquirer
 from crud_jual_beli import beli_tanaman
-from crud_ensiklopedia import read_ensiklopedia
+from crud_ensiklopedia import read_ensiklopedia, search_ensiklopedia, enter
 from crud_funfact import random_funfact
-from crud_ensiklopedia import ensiklopedia
 
 def menu_user():
     while True:
@@ -14,12 +14,15 @@ def menu_user():
                 choices=[
                     "1. Beli Tanaman",
                     "2. Ensiklopedia",
-                    "3. Funfact",
-                    "4. Logout",
+                    "3. Search Koleksi",
+                    "4. Funfact",
+                    "5. Logout",
                 ],
             )
         ])
-        if jawaban is None or jawaban["menu"].startswith("4."):
+        if jawaban is None or jawaban["menu"].startswith("5."):
+            print("Terima kasih telah menggunakan Kebun Kita!")
+            enter()
             break
 
         if jawaban["menu"].startswith("1."):
@@ -27,4 +30,6 @@ def menu_user():
         elif jawaban["menu"].startswith("2."):
             read_ensiklopedia()
         elif jawaban["menu"].startswith("3."):
-            random_funfact(ensiklopedia)
+            search_ensiklopedia()
+        elif jawaban["menu"].startswith("4."):
+            random_funfact()

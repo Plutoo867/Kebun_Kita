@@ -4,9 +4,9 @@
         "nama_ilmiah": "Aamaranthus spp",
         "deskripsi": "Bayam Merah",
         "manfaat": "Mantap",
-        "harga": "0",
-        "stock": "0",
-        "funfact": "Slibaw",
+        "harga": 5000,
+        "stock": 6,
+        "funfact": "bla bla bla, bla888",
         "makna": "Enak & Bergizi"
     },
     "id2": {
@@ -14,9 +14,9 @@
         "nama_ilmiah": "Psidium Guajava",
         "deskripsi": "Jambu Biji",
         "manfaat": "Mantap",
-        "harga": "10000",
-        "stock": 30,
-        "funfact": "0",
+        "harga": "0",
+        "stock": "0",
+        "funfact": "gokill",
         "makna": "Enak dan Bergizi"
     },
     "id3": {
@@ -24,18 +24,18 @@
         "nama_ilmiah": "Ipomoea Aquatica",
         "deskripsi": "Kangkung Hijau",
         "manfaat": "Mantap",
-        "harga": 15000000,
-        "stock": 0,
-        "funfact": "Selebew",
+        "harga": 8000,
+        "stock": 5,
+        "funfact": "s",
         "makna": "Menjaga Kesehatan Mata & Daya Tahan Tubuh"
     },
-    "id4": {
-        "nama": "Jagung",
-        "nama_ilmiah": "Zeamays L.",
-        "deskripsi": "Jagung Manis",
-        "manfaat": "Kaya Serat & Karbohidrat",
-        "harga": 10000,
-        "stock": 50,
-        "funfact": "0"
+    "id5": {
+        "nama": "cabai",
+        "nama_ilmiah": "j",
+        "deskripsi": "j",
+        "manfaat": "j",
+        "harga": 8000,
+        "stock": 3800,
+        "funfact": "anjayyy"
     }
 }

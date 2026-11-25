@@ -13,5 +13,15 @@
         "role": "user",
         "username": "woojin",
         "password": "lngshot"
+    },
+    "user3": {
+        "role": "user",
+        "username": "mia",
+        "password": "mia123"
+    },
+    "user4": {
+        "role": "user",
+        "username": "jeny",
+        "password": "jeny1"
     }
 }

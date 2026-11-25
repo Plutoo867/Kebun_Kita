@@ -71,5 +71,51 @@
             }
         ],
         "total_belanja": 275000
+    },
+    {
+        "waktu": "2026-11-25 12:08:18",
+        "items": [
+            {
+                "id": "id1",
+                "nama": "Bayam",
+                "harga": 1000,
+                "jumlah": 2,
+                "subtotal": 2000
+            }
+        ],
+        "total_belanja": 2000
+    },
+    {
+        "waktu": "2026-11-25 12:10:35",
+        "items": [
+            {
+                "id": "id2",
+                "nama": "Jambu",
+                "harga": 6000,
+                "jumlah": 3,
+                "subtotal": 18000
+            },
+            {
+                "id": "id3",
+                "nama": "Kangkung",
+                "harga": 8000,
+                "jumlah": 4,
+                "subtotal": 32000
+            }
+        ],
+        "total_belanja": 50000
+    },
+    {
+        "waktu": "2026-11-25 13:04:29",
+        "items": [
+            {
+                "id": "id5",
+                "nama": "cabai",
+                "harga": 8000,
+                "jumlah": 200,
+                "subtotal": 1600000
+            }
+        ],
+        "total_belanja": 1600000
     }
 ]

@@ -24,15 +24,12 @@ def main():
 
         if jawaban["awal"].startswith("2."):
             regis()
-            input("\nTekan Enter untuk melanjutkan...")
         elif jawaban["awal"].startswith("1."):
             role = login()
             if role == "user":
                 menu_user()
             elif role == "admin":
                 menu_admin()
-            else:
-                input("\nTekan Enter untuk kembali ke menu awal...")
 
 
 if __name__ == "__main__":

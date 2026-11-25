@@ -1,5 +1,7 @@
 import os
 import json
+import inquirer
+import re
 from prettytable import PrettyTable
 from colored import fore, Style
 
@@ -12,14 +14,11 @@ def load_data():
     except json.JSONDecodeError: 
         return {}
 
-
 def simpan_data():
     with open("ensiklopedia.json", "w", encoding="utf-8") as file:
         json.dump(ensiklopedia, file, indent=4, ensure_ascii=False)
 
-
 ensiklopedia = load_data()
-id_terakhir = len(ensiklopedia)
 
 def cek_tanaman(nama):
     for tanaman in ensiklopedia.values():
@@ -28,7 +27,11 @@ def cek_tanaman(nama):
     return False
 
 def id_tanaman():
-    global id_terakhir
+    id_terakhir = 0
+    for kunci in ensiklopedia.keys():
+        nomor = int(kunci.replace("id", ""))
+        if nomor > id_terakhir:
+            id_terakhir = nomor
     id_terakhir += 1
     return f"id{id_terakhir}"
 
@@ -50,10 +53,8 @@ def daftar_tanaman(ensiklopedia):
 
     print(table)
 
-
 def table_detail(data):
     warna_judul: str = f"{fore(204)}"
-    warna_isi: str = f"{fore(197)}"
     table = PrettyTable()
 
     table.title = f"{warna_judul}DETAIL TANAMAN{Style.reset}"
@@ -75,141 +76,228 @@ def pesan_error(teks):
 def pesan_sukses(teks):
     print(f"{fore(29)}{teks}{Style.reset}")
 
+def bersihkan_terminal():
+    os.system("cls" if os.name == "nt" else "clear")
+
+def enter():
+    print("\nTekan Enter untuk lanjut...")
+
+    if os.name == "nt":
+        import msvcrt
+        while msvcrt.kbhit():
+            msvcrt.getwch()
+        while True:
+            if msvcrt.getwch() in ("\r", "\n"):
+                break
+    else:
+        input()
+
 def read_ensiklopedia():
     while True:
-        os.system("cls" if os.name == "nt" else "clear")
-        daftar_tanaman(ensiklopedia)
+        bersihkan_terminal()
         print("0. Kembali ke menu utama")
+        daftar_tanaman(ensiklopedia)
         try:
             detail = int(input("Masukkan nomor tanaman untuk melihat detail: ").strip())
             if detail >= 1 and detail <= len(ensiklopedia):
-                id_tanaman = list(ensiklopedia.keys())
-                tanaman_terpilih = ensiklopedia[id_tanaman[detail - 1]]
+                tanaman_id = list(ensiklopedia.keys()) 
+                tanaman_terpilih = ensiklopedia[tanaman_id [detail - 1]]
                 detail_tanaman = {
                     "Nama Tanaman": tanaman_terpilih["nama"],
                     "Nama Ilmiah": tanaman_terpilih["nama_ilmiah"],
                     "Deskripsi": tanaman_terpilih["deskripsi"],
                     "Manfaat Tanaman": tanaman_terpilih["manfaat"],
                 }
-                table_detail(detail_tanaman)
-                input("\nTekan Enter untuk kembali ke daftar tanaman...")
+                table_detail(detail_tanaman)  
+                enter()
             elif detail == 0:
                 break
             else:
                 pesan_error("Koleksi tidak tersedia!")
-                input("\nTekan Enter untuk melanjutkan...")
+                enter()
         except ValueError:
-            pesan_error("Input Tidak Valid!")
-            input("\nTekan Enter untuk melanjutkan...")
-
+            pesan_error("Input Tidak Valid! Silahkan masukkan angka yang valid")
+            enter()
 
 def create_ensiklopedia():
     while True:
         os.system("cls" if os.name == "nt" else "clear")
+        lebar = 45
+        garis = "+" + "-" * (lebar + 2) + "+"
+        print(garis)
+        print(f"| {fore(204)}{'TAMBAH KOLEKSI'.center(lebar)}{Style.reset} |")
+        print(garis)
         try:
-            nama = input("Masukkan nama tanaman          : ").strip()
-            ilmiah = input("Masukkan nama ilmiah tanaman   : ").strip()
-            desk = input("Masukkan deskripsi tanaman     : ").strip()
+            nama    = input("Masukkan nama tanaman          : ").strip()
+            ilmiah  = input("Masukkan nama ilmiah tanaman   : ").strip()
+            desk    = input("Masukkan deskripsi tanaman     : ").strip()
             manfaat = input("Masukkan manfaat tanaman       : ").strip()
 
-            if cek_tanaman(nama):
+            if not re.fullmatch(r"[a-zA-Z ]+", nama):
+                pesan_error("Nama tanaman hanya boleh huruf!")
+                enter()
+                continue
+
+            elif not re.fullmatch(r"[a-zA-Z ]+", ilmiah):
+                pesan_error("Nama ilmiah tanaman hanya boleh huruf!")
+                enter()
+                continue
+
+            elif cek_tanaman(nama):
                 pesan_error("Koleksi sudah tersedia, silahkan input ulang!")
-                input("\nTekan Enter untuk melanjutkan...")
+                enter()
                 continue
 
-            if nama == "" or desk == "" or manfaat == "" or ilmiah == "":
+            elif nama == "" or desk == "" or manfaat == "" or ilmiah == "":
                 pesan_error("Kolom tidak boleh kosong!")
-                input("\nTekan Enter untuk melanjutkan...")
+                enter()
                 continue
 
-            ensiklopedia[id_tanaman()] = {
-                "nama": nama,
-                "nama_ilmiah": ilmiah,
-                "deskripsi": desk,
-                "manfaat": manfaat,
-                "harga": "0",
-                "stock": "0",
-                "funfact": "0",
-            }
-            simpan_data()
+            else:
+                konfirmasi = [
+                    inquirer.List(
+                        "konfirmasi",
+                        message="Apakah Anda yakin ingin menambahkan koleksi ini?",
+                        choices=["Ya", "Tidak"],
+                        )
+                    ]
+                jawaban = inquirer.prompt(konfirmasi)
 
-            pesan_sukses("Koleksi berhasil di tambahkan!")
-            input("\nTekan Enter untuk melanjutkan...")
-            break
+                if jawaban["konfirmasi"] == "Ya":
+                    ensiklopedia[id_tanaman()] = {
+                        "nama": nama,
+                        "nama_ilmiah": ilmiah,
+                        "deskripsi": desk,
+                        "manfaat": manfaat,
+                        "harga": "0",
+                        "stock": "0",
+                        "funfact": "0",
+                    }
+                    simpan_data()
+                    pesan_sukses("Koleksi berhasil ditambahkan!")
+                    enter()
+                    return
+                elif jawaban["konfirmasi"] == "Tidak":
+                    pesan_sukses("Tambah koleksi di batalkan!")
+                    enter()
+                    break
+        except ValueError:
+            pesan_error("Input Tidak Valid! Silahkan masukkan angka yang valid")
+            enter()
+        
+def update_ensiklopedia():
+    while True:   
+        os.system("cls" if os.name == "nt" else "clear")
+        print("0. Kembali ke menu utama")
+        daftar_tanaman(ensiklopedia)
+        try:
+            edit = int(input("Masukkan nomor tanaman yang ingin diedit: ").strip())
+
+            if edit == 0:
+                return
+            
+            elif edit >= 1 and edit <= len(ensiklopedia):
+                tanaman_id = list(ensiklopedia.keys()) 
+                tanaman_edit = ensiklopedia[tanaman_id[edit - 1]]
+
+                pesan_sukses("(Tekan Enter jika tidak ingin mengubah)")
+
+                while True:   
+                    nama_baru      = input(f"Nama Tanaman [{tanaman_edit['nama']}]: ").strip()
+                    ilmiah_baru    = input(f"Nama Ilmiah [{tanaman_edit['nama_ilmiah']}]: ").strip()
+                    deskripsi_baru = input(f"Deskripsi [{tanaman_edit['deskripsi']}]: ").strip()
+                    manfaat_baru   = input(f"Manfaat Tanaman [{tanaman_edit['manfaat']}]: ").strip()
+
+                    if nama_baru != "" and not re.fullmatch(r"[a-zA-Z ]+", nama_baru):
+                        pesan_error("Nama tanaman hanya boleh huruf!")
+                        enter()
+                        continue
+
+                    elif ilmiah_baru != "" and not re.fullmatch(r"[a-zA-Z ]+", ilmiah_baru):
+                        pesan_error("Nama ilmiah tanaman hanya boleh huruf!")
+                        enter()
+                        continue
+
+                    elif nama_baru != "" and nama_baru.lower() != tanaman_edit["nama"].lower() and cek_tanaman(nama_baru):
+                        pesan_error("Koleksi sudah tersedia, silahkan input ulang!")
+                        enter()
+                        continue
+
+                    else:
+                        konfirmasi = [
+                            inquirer.List(
+                                "konfirmasi",
+                                message="Apakah Anda yakin ingin mengupdate koleksi ini?",
+                                choices=["Ya", "Tidak"],
+                                )
+                            ]
+            
+                        jawaban = inquirer.prompt(konfirmasi)
+            
+                        if jawaban["konfirmasi"] == "Ya":
+                            if nama_baru != "":
+                                tanaman_edit["nama"] = nama_baru
+                            if ilmiah_baru != "":
+                                tanaman_edit["nama_ilmiah"] = ilmiah_baru
+                            if deskripsi_baru != "":
+                                tanaman_edit["deskripsi"] = deskripsi_baru
+                            if manfaat_baru != "":
+                                tanaman_edit["manfaat"] = manfaat_baru
+                            simpan_data()
+                            pesan_sukses("Koleksi berhasil diupdate!")
+                            enter()
+                            return
+                        elif jawaban["konfirmasi"] == "Tidak":
+                            pesan_sukses("Update koleksi di batalkan!")
+                            enter()
+                            break
+            else:
+                pesan_error("Koleksi tidak tersedia!")
+                enter()
+                break
         except ValueError:
             pesan_error("Input Tidak Valid!")
-            input("\nTekan Enter untuk melanjutkan...")
-            
-def update_ensiklopedia():
-    os.system("cls" if os.name == "nt" else "clear")
-    print("0. Kembali ke menu utama")
-    daftar_tanaman(ensiklopedia)
-    try:
-        edit = int(input("Masukkan nomor tanaman yang ingin diedit: ").strip())
-
-        if edit == 0:
-            return
-        
-        elif edit >= 1 and edit <= len(ensiklopedia):
-            id_tanaman = list(ensiklopedia.keys()) 
-            tanaman_edit = ensiklopedia[id_tanaman[edit - 1]]
-
-            pesan_sukses("(Tekan Enter jika tidak ingin mengubah)")
-
-            while True:   
-                nama_baru      = input(f"Nama Tanaman [{tanaman_edit['nama']}]: ").strip()
-                ilmiah_baru    = input(f"Nama Ilmiah [{tanaman_edit['nama_ilmiah']}]: ").strip()
-                deskripsi_baru = input(f"Deskripsi [{tanaman_edit['deskripsi']}]: ").strip()
-                manfaat_baru   = input(f"Manfaat Tanaman [{tanaman_edit['manfaat']}]: ").strip()
-
-# yakin ingin mengubah daftar
-
-                if nama_baru != "" and cek_tanaman(nama_baru):
-                    pesan_error("Koleksi sudah tersedia, silahkan input ulang!")
-                    continue
-
-                if nama_baru != "":
-                    tanaman_edit["nama"] = nama_baru
-                if ilmiah_baru != "":
-                    tanaman_edit["nama_ilmiah"] = ilmiah_baru
-                if deskripsi_baru != "":
-                    tanaman_edit["deskripsi"] = deskripsi_baru
-                if manfaat_baru != "":
-                    tanaman_edit["makna"] = manfaat_baru
-
-                simpan_data()
-
-                pesan_sukses("Koleksi berhasil diedit!")
-                break
-        else:
-            pesan_error("Koleksi tidak tersedi!")
-    except ValueError:
-        pesan_error("Input Tidak Valid!")
+            enter()
 
 def delete_ensiklopedia():
-    print("0. Kembali ke menu utama")
-    daftar_tanaman(ensiklopedia)
-    try:
-        hapus = int(input("Masukkan nomor tanaman yang ingin dihapus: ").strip())
-        if hapus == 0:
-            return
-        
-        elif hapus >= 1 and hapus <= len(ensiklopedia):
-            id_tanaman = list(ensiklopedia.keys()) 
-            tanaman_hapus = ensiklopedia[id_tanaman[hapus - 1]]
-            konfirmasi = input(f"Yakin hapus '{tanaman_hapus['nama']}'(y/t)?: ").strip().lower()
-            if konfirmasi == "y":
-                ensiklopedia.pop(id_tanaman[hapus - 1])
-                simpan_data()
-                pesan_sukses("Koleksi berhasil dihapus!")
-            elif konfirmasi == "t":
-                pesan_sukses("Penghapusan dibatalkan.")
+    while True:
+        os.system("cls" if os.name == "nt" else "clear")
+        print("0. Kembali ke menu utama")
+        daftar_tanaman(ensiklopedia)
+        try:
+            hapus = int(input("Masukkan nomor tanaman yang ingin dihapus: ").strip())
+            if hapus == 0:
+                return
+            
+            elif hapus >= 1 and hapus <= len(ensiklopedia):
+                tanaman_id = list(ensiklopedia.keys()) 
+                tanaman_hapus = ensiklopedia[tanaman_id[hapus - 1]]
+                konfirmasi = [
+                    inquirer.List(
+                        "konfirmasi",
+                        message=f"Apakah Anda yakin ingin menghapus koleksi {tanaman_hapus['nama']}?",
+                        choices=["Ya", "Tidak"],
+                        )
+                    ]
+
+                jawaban = inquirer.prompt(konfirmasi)
+
+                if jawaban["konfirmasi"] == "Ya":
+                    ensiklopedia.pop(tanaman_id[hapus - 1])
+                    simpan_data()
+                    pesan_sukses("Koleksi berhasil dihapus!")
+                    enter()
+                
+                elif jawaban["konfirmasi"] == "Tidak":
+                    pesan_sukses("Penghapusan koleksi di batalkan!")
+                    enter()
             else:
-                pesan_error("Input tidak valid! pilih antara y/t")
-        else:
-            pesan_error("Koleksi tidak tersedia!")
-    except ValueError:
-        pesan_error("Input Tidak Valid!")
+                pesan_error("Koleksi tidak tersedia!")
+                enter()
+
+        except ValueError:
+            pesan_error("Input Tidak Valid!")
+            enter()
 
 def search_awal(data, keyword):
     keyword = keyword.lower()
@@ -221,24 +309,41 @@ def search_awal(data, keyword):
 
 def search_ensiklopedia():
     while True:
+        os.system("cls" if os.name == "nt" else "clear")
+
         print("0. Kembali ke menu utama")
+        lebar = 45
+        garis = "+" + "-" * (lebar + 2) + "+"
+        print(garis)
+        print(f"| {fore(204)}{'PENCARIAN TANAMAN'.center(lebar)}{Style.reset} |")
+        print(garis)
+
         keyword = input("Cari nama tanaman (ketik 0 untuk kembali): ").strip()
 
         if keyword == "0":
             break
 
-        hasil = search_awal(ensiklopedia, keyword)
-
-        if not hasil:
-            pesan_error("Tanaman tidak ditemukan.")
+        elif not re.fullmatch(r"[a-zA-Z ]+", keyword):
+            pesan_error("Nama tanaman hanya boleh huruf!")
+            enter()
             continue
 
-        for data in hasil.values():
-            detail_tanaman = {
-                "Nama Tanaman": data["nama"],
-                "Nama Ilmiah": data["nama_ilmiah"],
-                "Deskripsi": data["deskripsi"],
-                "Manfaat Tanaman": data["manfaat"],
-            }
-            table_detail(detail_tanaman)
+        else:
+            hasil = search_awal(ensiklopedia, keyword)
 
+            if not hasil:
+                pesan_error("Tanaman tidak ditemukan.")
+                enter()
+                continue
+            pesan_sukses(f"Ditemukan {len(hasil)} tanaman dengan awalan '{keyword}'")
+
+            for data in hasil.values():
+                detail_tanaman = {
+                    "Nama Tanaman": data["nama"],
+                    "Nama Ilmiah": data["nama_ilmiah"],
+                    "Deskripsi": data["deskripsi"],
+                    "Manfaat Tanaman": data["manfaat"],
+                }
+                table_detail(detail_tanaman)
+
+            enter()
