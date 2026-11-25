@@ -1,7 +1,7 @@
 import os
 import inquirer
-from crud_jual_beli import read_data, create_data, edit_data, delete_data
-from crud_ensiklopedia import read_ensiklopedia, create_ensiklopedia, update_ensiklopedia, delete_ensiklopedia, search_ensiklopedia
+from crud_jual_beli import read_jual_beli, create_jual_beli, update_jual_beli, delete_jual_beli
+from crud_ensiklopedia import read_ensiklopedia, create_ensiklopedia, update_ensiklopedia, delete_ensiklopedia, search_ensiklopedia, enter
 from crud_funfact import create_funfact, update_funfact, delete_funfact, read_funfact
 
 def menu_admin():
@@ -10,7 +10,7 @@ def menu_admin():
         jawaban = inquirer.prompt([
             inquirer.List(
                 "menu",
-                message="Pilih Menu Jual Beli",
+                message="Menu Admin Kebun Kita:",
                 choices=[
                     "1. Ensiklopedia",
                     "2. Jual Beli",
@@ -20,6 +20,8 @@ def menu_admin():
             )
         ])
         if jawaban is None or jawaban["menu"].startswith("4."):
+            print("Terima kasih telah menggunakan Kebun Kita!")
+            enter()
             break
 
         if jawaban["menu"].startswith("1."):
@@ -37,11 +39,11 @@ def menu_ensiklopedia():
                 "menu",
                 message="Pilih Menu Ensiklopedia",
                 choices=[
-                    "1. Lihat Ensiklopedia",
-                    "2. Tambah Ensiklopedia",
-                    "3. Ubah Ensiklopedia",
-                    "4. Hapus Ensiklopedia",
-                    "5. Cari Ensiklopedia",
+                    "1. Lihat Koleksi",
+                    "2. Tambah Koleksi",
+                    "3. Update Koleksi",
+                    "4. Hapus Koleksi",
+                    "5. Cari Koleksi",
                     "6. Kembali ke Menu Admin",
                 ],
             )
@@ -70,7 +72,7 @@ def menu_funfact():
                 choices=[
                     "1. Lihat Funfact",
                     "2. Tambah Funfact",
-                    "3. Ubah Funfact",
+                    "3. Update Funfact",
                     "4. Hapus Funfact",
                     "5. Kembali ke Menu Admin",
                 ],
@@ -98,7 +100,7 @@ def menu_jual_beli():
                 choices=[
                     "1. Lihat Data Jual Beli",
                     "2. Tambah Data Jual Beli",
-                    "3. Ubah Data Jual Beli",
+                    "3. Update Data Jual Beli",
                     "4. Hapus Data Jual Beli",
                     "5. Kembali ke Menu Admin",
                 ],
@@ -108,10 +110,10 @@ def menu_jual_beli():
             break
 
         if jawaban["menu"].startswith("1."):
-            read_data()
+            read_jual_beli()
         elif jawaban["menu"].startswith("2."):
-            create_data()
+            create_jual_beli()
         elif jawaban["menu"].startswith("3."):
-            edit_data()
+            update_jual_beli()
         elif jawaban["menu"].startswith("4."):
-            delete_data()
+            delete_jual_beli()
