@@ -1,11 +1,12 @@
-import os, inquirer
+import inquirer
 from auth import login, regis
 from menu_admin import menu_admin
 from menu_user import menu_user
+from utilis import pesan_sukses, bersihkan_terminal
 
 def main():
     while True:
-        os.system("cls" if os.name == "nt" else "clear")
+        bersihkan_terminal()
         jawaban = inquirer.prompt([
             inquirer.List(
                 "awal",
@@ -19,7 +20,7 @@ def main():
         ])
 
         if jawaban is None or jawaban["awal"].startswith("3."):
-            print("Terima kasih telah menggunakan Kebun Kita!")
+            pesan_sukses("Terima kasih telah menggunakan Kebun Kita!")
             break
 
         if jawaban["awal"].startswith("2."):

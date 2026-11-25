@@ -1,17 +1,18 @@
-import os
 import inquirer
-from crud_jual_beli import read_jual_beli, create_jual_beli, update_jual_beli, delete_jual_beli
-from crud_ensiklopedia import read_ensiklopedia, create_ensiklopedia, update_ensiklopedia, delete_ensiklopedia, search_ensiklopedia, enter
+from crud_jual_beli import read_jual_beli, create_jual_beli, update_jual_beli, delete_jual_beli, rekap_penjualan
+from crud_ensiklopedia import read_ensiklopedia, create_ensiklopedia, update_ensiklopedia, delete_ensiklopedia, search_ensiklopedia
 from crud_funfact import create_funfact, update_funfact, delete_funfact, read_funfact
+from utilis import enter, pesan_sukses, bersihkan_terminal
 
 def menu_admin():
     while True:
-        os.system("cls" if os.name == "nt" else "clear")
+        bersihkan_terminal()
         jawaban = inquirer.prompt([
             inquirer.List(
                 "menu",
                 message="Menu Admin Kebun Kita:",
                 choices=[
+                    
                     "1. Ensiklopedia",
                     "2. Jual Beli",
                     "3. Funfact",
@@ -20,7 +21,7 @@ def menu_admin():
             )
         ])
         if jawaban is None or jawaban["menu"].startswith("4."):
-            print("Terima kasih telah menggunakan Kebun Kita!")
+            pesan_sukses("Terima kasih telah menggunakan Kebun Kita!")
             enter()
             break
 
@@ -33,7 +34,7 @@ def menu_admin():
 
 def menu_ensiklopedia():
     while True:
-        os.system("cls" if os.name == "nt" else "clear")
+        bersihkan_terminal()
         jawaban = inquirer.prompt([
             inquirer.List(
                 "menu",
@@ -64,7 +65,7 @@ def menu_ensiklopedia():
 
 def menu_funfact():
     while True:
-        os.system("cls" if os.name == "nt" else "clear")
+        bersihkan_terminal()
         jawaban = inquirer.prompt([
             inquirer.List(
                 "menu",
@@ -92,7 +93,7 @@ def menu_funfact():
 
 def menu_jual_beli():
     while True:
-        os.system("cls" if os.name == "nt" else "clear")
+        bersihkan_terminal()
         jawaban = inquirer.prompt([
             inquirer.List(
                 "menu",
@@ -102,11 +103,12 @@ def menu_jual_beli():
                     "2. Tambah Data Jual Beli",
                     "3. Update Data Jual Beli",
                     "4. Hapus Data Jual Beli",
-                    "5. Kembali ke Menu Admin",
+                    "5. Rekap Data Penjualan",
+                    "6. Kembali ke Menu Admin",
                 ],
             )
         ])
-        if jawaban is None or jawaban["menu"].startswith("5."):
+        if jawaban is None or jawaban["menu"].startswith("6."):
             break
 
         if jawaban["menu"].startswith("1."):
@@ -117,3 +119,5 @@ def menu_jual_beli():
             update_jual_beli()
         elif jawaban["menu"].startswith("4."):
             delete_jual_beli()
+        elif jawaban["menu"].startswith("5."):
+            rekap_penjualan()

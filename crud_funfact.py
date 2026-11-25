@@ -1,83 +1,20 @@
-import os
 import random
 import textwrap
-import json
 import inquirer
+import re
 from prettytable import PrettyTable
 from colored import fore, Style
-
-def load_data():
-    if not os.path.exists("ensiklopedia.json"):
-        return {}
-    try:
-        with open("ensiklopedia.json", "r", encoding="utf-8") as file:
-            return json.load(file)
-    except json.JSONDecodeError:
-        return {}
-
-def simpan_data():
-    with open("ensiklopedia.json", "w", encoding="utf-8") as file:
-        json.dump(ensiklopedia, file, indent=4, ensure_ascii=False)
-
-ensiklopedia = load_data()
-
-def tampilkan_daftar(daftar_id, judul):
-    warna_judul: str = f"{fore(204)}"
-    warna_isi: str = f"{fore(197)}"
-
-    print("0. Kembali ke Menu Utama")
-    table = PrettyTable()
-
-    table.title = f"{warna_judul}{judul.upper()}{Style.reset}"
-    table.field_names = ["No", "Nama Tanaman"]
-    table.header = False
-    table.max_width["No"] = 3
-    table.min_width["Nama Tanaman"] = 35
-    table.align["Nama Tanaman"] = "l"
-
-    for nomor, id_data in enumerate(daftar_id, start=1):
-        tanaman = f"{warna_isi}{ensiklopedia[id_data]['nama']}{Style.reset}"
-        table.add_row([nomor, tanaman])
-
-    print(table)
-
-def table_funfact(data):
-    warna_judul: str = f"{fore(204)}"
-    table = PrettyTable()
-
-    table.title = f"{warna_judul}FUNFACT TANAMAN{Style.reset}"
-    table.field_names = ["Label", "Isi"]
-    table.header = False
-    table.align = "l"
-    table.max_width["Label"] = 15
-    table.min_width["Isi"] = 25
-
-    for label, isi in data.items():
-        table.add_row([label, isi])
-
-    print(table)
-
-def pesan_error(teks):
-    print(f"{fore(124)}{teks}{Style.reset}")
-
-def pesan_sukses(teks):
-    print(f"{fore(29)}{teks}{Style.reset}")
-
-def enter():
-    print("\nTekan Enter untuk lanjut...")
-
-    if os.name == "nt":
-        import msvcrt
-        while msvcrt.kbhit():
-            msvcrt.getwch()
-        while True:
-            if msvcrt.getwch() in ("\r", "\n"):
-                break
-    else:
-        input()
+from utilis import (ensiklopedia, 
+                    simpan_data, 
+                    pesan_error, 
+                    pesan_sukses, 
+                    bersihkan_terminal, 
+                    enter, 
+                    daftar_funfact,
+                    table_detail_funfact)
 
 def random_funfact():
-    os.system("cls" if os.name == "nt" else "clear")
+    bersihkan_terminal()
     funfacts = []
 
     for id_data in ensiklopedia:
@@ -93,7 +30,7 @@ def random_funfact():
         random_data = random.choice(funfacts)
 
         funfact_wrapped = textwrap.fill(random_data["Funfact"], width=50)
-        table_funfact({
+        table_detail_funfact({
             "Nama Tanaman": random_data["Nama_tanaman"],
             "Funfact": funfact_wrapped
         })
@@ -104,9 +41,9 @@ def random_funfact():
         enter()
 
 def read_funfact():
-    os.system("cls" if os.name == "nt" else "clear")
-    warna_judul: str = f"{fore(204)}"
-    warna_isi: str = f"{fore(197)}"
+    bersihkan_terminal()
+    warna_judul: str = f"{fore(214)}"
+    warna_isi: str = f"{fore(215)}"
     id_kosong = []
 
     for id_data in ensiklopedia:
@@ -141,7 +78,6 @@ def read_funfact():
     enter()
 
 def create_funfact():
-    os.system("cls" if os.name == "nt" else "clear")
     id_kosong = []
 
     for id_data in ensiklopedia:
@@ -154,14 +90,21 @@ def create_funfact():
         return
 
     while True:
-        tampilkan_daftar(id_kosong, "Daftar Tanaman Tanpa Funfact")
+        bersihkan_terminal()
+        daftar_funfact(id_kosong, "Daftar Tanaman Tanpa Funfact")
         try:
-            pilihan = int(input("Masukkan nomor tanaman untuk menambah Funfact: ").strip())
+            pilihan = input("Masukkan nomor tanaman untuk menambah Funfact: ").strip()
 
-            if pilihan == 0:
+            if pilihan == "0":
                 break
 
-            elif pilihan < 1 or pilihan > len(id_kosong):
+            elif not re.fullmatch(r"[0-9]+", pilihan):
+                pesan_error("Hanya boleh angka valid!")
+                enter()
+                continue
+
+            pilihan = int(pilihan)
+            if pilihan < 1 or pilihan > len(id_kosong):
                 pesan_error("Nomor tanaman tidak tersedia!")
                 enter()
                 continue
@@ -200,11 +143,16 @@ def create_funfact():
                     break
 
         except ValueError:
-            pesan_error("Input Tidak Valid! Silahkan masukkan angka yang valid")
+            pesan_error("\nInput Tidak Valid!")
+            enter()
+        except KeyboardInterrupt:
+            pesan_error("\nTerjadi error interupsi melalui keyboard!")
+            enter()
+        except EOFError:
+            pesan_error("\nTerjadi error interupsi melalui keyboard!")
             enter()
 
 def update_funfact():
-    os.system("cls" if os.name == "nt" else "clear")
     id_dengan_funfact = []
 
     for id_data in ensiklopedia:
@@ -217,13 +165,20 @@ def update_funfact():
         return
 
     while True:
-        tampilkan_daftar(id_dengan_funfact, "Daftar Tanaman Dengan Funfact")
+        bersihkan_terminal()
+        daftar_funfact(id_dengan_funfact, "Daftar Tanaman Dengan Funfact")
         try:
-            pilihan = int(input("\nMasukkan nomor tanaman yang ingin di update: ").strip())
-
-            if pilihan == 0:
+            pilihan = input("\nMasukkan nomor tanaman yang ingin di update: ").strip()
+            if pilihan == "0":
                 break
-            elif pilihan < 1 or pilihan > len(id_dengan_funfact):
+
+            elif not re.fullmatch(r"[0-9]+", pilihan):
+                pesan_error("Hanya boleh angka valid!")
+                enter()
+                continue
+            
+            pilihan = int(pilihan)
+            if pilihan < 1 or pilihan > len(id_dengan_funfact):
                 pesan_error("Nomor tanaman tidak tersedia!")
                 enter()
                 continue
@@ -263,11 +218,16 @@ def update_funfact():
                     enter()
                     break
         except ValueError:
-            pesan_error("Input Tidak Valid! Silahkan masukkan angka yang valid")
+            pesan_error("\nInput Tidak Valid!")
+            enter()
+        except KeyboardInterrupt:
+            pesan_error("\nTerjadi error interupsi melalui keyboard!")
+            enter()
+        except EOFError:
+            pesan_error("\nTerjadi error interupsi melalui keyboard!")
             enter()
 
 def delete_funfact():
-    os.system("cls" if os.name == "nt" else "clear")
     id_dengan_funfact = []
 
     for id_data in ensiklopedia:
@@ -280,13 +240,21 @@ def delete_funfact():
         return
 
     while True:
-        tampilkan_daftar(id_dengan_funfact, "Daftar Tanaman Dengan Funfact")
+        bersihkan_terminal()
+        daftar_funfact(id_dengan_funfact, "Daftar Tanaman Dengan Funfact")
         try:
-            pilihan = int(input("\nMasukkan nomor tanaman yang ingin di hapus: ").strip())
+            pilihan = input("\nMasukkan nomor tanaman yang ingin di hapus: ").strip()
 
-            if pilihan == 0:
+            if pilihan == "0":
                 break
-            elif pilihan < 1 or pilihan > len(id_dengan_funfact):
+
+            elif not re.fullmatch(r"[0-9]+", pilihan):
+                pesan_error("Hanya boleh angka valid!")
+                enter()
+                continue
+            
+            pilihan = int(pilihan)
+            if pilihan < 1 or pilihan > len(id_dengan_funfact):
                 pesan_error("Nomor tanaman tidak tersedia!")
                 enter()
                 continue
@@ -310,5 +278,11 @@ def delete_funfact():
                 pesan_sukses("Funfact tidak dihapus")
                 enter()
         except ValueError:
-            pesan_error("Input Tidak Valid! Silahkan masukkan angka yang valid")
+            pesan_error("\nInput Tidak Valid!")
+            enter()
+        except KeyboardInterrupt:
+            pesan_error("\nTerjadi error interupsi melalui keyboard!")
+            enter()
+        except EOFError:
+            pesan_error("\nTerjadi error interupsi melalui keyboard!")
             enter()
