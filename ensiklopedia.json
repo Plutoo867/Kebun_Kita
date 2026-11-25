@@ -5,7 +5,7 @@
         "deskripsi": "Bayam Merah",
         "manfaat": "Mantap",
         "harga": 5000,
-        "stock": 6,
+        "stock": 0,
         "funfact": "bla bla bla, bla888",
         "makna": "Enak & Bergizi"
     },
@@ -14,8 +14,8 @@
         "nama_ilmiah": "Psidium Guajava",
         "deskripsi": "Jambu Biji",
         "manfaat": "Mantap",
-        "harga": "0",
-        "stock": "0",
+        "harga": 2000,
+        "stock": 263,
         "funfact": "gokill",
         "makna": "Enak dan Bergizi"
     },
@@ -25,7 +25,7 @@
         "deskripsi": "Kangkung Hijau",
         "manfaat": "Mantap",
         "harga": 8000,
-        "stock": 5,
+        "stock": 1,
         "funfact": "s",
         "makna": "Menjaga Kesehatan Mata & Daya Tahan Tubuh"
     },
@@ -35,7 +35,7 @@
         "deskripsi": "j",
         "manfaat": "j",
         "harga": 8000,
-        "stock": 3800,
+        "stock": 3,
         "funfact": "anjayyy"
     }
 }

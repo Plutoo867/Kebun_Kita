@@ -1,121 +1,114 @@
 [
     {
-        "waktu": "2026-11-23 13:46:36",
-        "items": [
-            {
-                "id": "id3",
-                "nama": "Kangkung",
-                "harga": 15000000,
-                "jumlah": 5,
-                "subtotal": 75000000
-            }
-        ],
-        "total_belanja": 75000000
-    },
-    {
-        "waktu": "2026-11-23 13:49:11",
+        "waktu": "2026-11-26 01:07:07",
         "items": [
             {
                 "id": "id1",
                 "nama": "Bayam",
-                "harga": 15000,
-                "jumlah": 50,
-                "subtotal": 750000
-            },
-            {
-                "id": "id2",
-                "nama": "Jambu",
-                "harga": 10000,
-                "jumlah": 100,
-                "subtotal": 1000000
-            },
-            {
-                "id": "id3",
-                "nama": "Kangkung",
-                "harga": 15000000,
-                "jumlah": 5,
-                "subtotal": 75000000
-            }
-        ],
-        "total_belanja": 76750000
-    },
-    {
-        "waktu": "2026-11-23 14:03:24",
-        "items": [
-            {
-                "id": "id1",
-                "nama": "Bayam",
-                "harga": 15000,
-                "jumlah": 20,
-                "subtotal": 300000
-            }
-        ],
-        "total_belanja": 300000
-    },
-    {
-        "waktu": "2026-11-23 14:07:01",
-        "items": [
-            {
-                "id": "id1",
-                "nama": "Bayam",
-                "harga": 15000,
-                "jumlah": 5,
-                "subtotal": 75000
-            },
-            {
-                "id": "id2",
-                "nama": "Jambu",
-                "harga": 10000,
-                "jumlah": 20,
-                "subtotal": 200000
-            }
-        ],
-        "total_belanja": 275000
-    },
-    {
-        "waktu": "2026-11-25 12:08:18",
-        "items": [
-            {
-                "id": "id1",
-                "nama": "Bayam",
-                "harga": 1000,
+                "harga": 5000,
                 "jumlah": 2,
-                "subtotal": 2000
+                "subtotal": 10000
+            },
+            {
+                "id": "id1",
+                "nama": "Bayam",
+                "harga": 5000,
+                "jumlah": 2,
+                "subtotal": 10000
             }
         ],
-        "total_belanja": 2000
+        "total_belanja": 20000
     },
     {
-        "waktu": "2026-11-25 12:10:35",
+        "waktu": "2026-11-26 01:07:17",
         "items": [
-            {
-                "id": "id2",
-                "nama": "Jambu",
-                "harga": 6000,
-                "jumlah": 3,
-                "subtotal": 18000
-            },
             {
                 "id": "id3",
                 "nama": "Kangkung",
                 "harga": 8000,
-                "jumlah": 4,
-                "subtotal": 32000
+                "jumlah": 3,
+                "subtotal": 24000
             }
         ],
-        "total_belanja": 50000
+        "total_belanja": 24000
     },
     {
-        "waktu": "2026-11-25 13:04:29",
+        "waktu": "2026-11-26 01:07:38",
         "items": [
             {
                 "id": "id5",
                 "nama": "cabai",
                 "harga": 8000,
-                "jumlah": 200,
-                "subtotal": 1600000
+                "jumlah": 20,
+                "subtotal": 160000
+            },
+            {
+                "id": "id1",
+                "nama": "Bayam",
+                "harga": 5000,
+                "jumlah": 1,
+                "subtotal": 5000
             }
         ],
-        "total_belanja": 1600000
+        "total_belanja": 165000
+    },
+    {
+        "waktu": "2026-11-26 01:31:54",
+        "items": [
+            {
+                "id": "id1",
+                "nama": "Bayam",
+                "harga": 5000,
+                "jumlah": 50,
+                "subtotal": 250000
+            }
+        ],
+        "total_belanja": 250000
+    },
+    {
+        "waktu": "2026-11-26 01:32:07",
+        "items": [
+            {
+                "id": "id2",
+                "nama": "Jambu",
+                "harga": 2000,
+                "jumlah": 34,
+                "subtotal": 68000
+            },
+            {
+                "id": "id3",
+                "nama": "Kangkung",
+                "harga": 8000,
+                "jumlah": 1,
+                "subtotal": 8000
+            }
+        ],
+        "total_belanja": 76000
+    },
+    {
+        "waktu": "2026-11-26 01:32:17",
+        "items": [
+            {
+                "id": "id2",
+                "nama": "Jambu",
+                "harga": 2000,
+                "jumlah": 2,
+                "subtotal": 4000
+            }
+        ],
+        "total_belanja": 4000
+    },
+    {
+        "waktu": "2026-11-26 02:36:15",
+        "items": [
+            {
+                "id": "id2",
+                "nama": "Jambu",
+                "harga": 2000,
+                "jumlah": 1,
+                "subtotal": 2000
+            }
+        ],
+        "total_belanja": 2000
     }
 ]
