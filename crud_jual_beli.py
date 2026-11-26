@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 from prettytable import PrettyTable
 from colored import fore, Style
 from datetime import datetime
-from collections import defaultdict
 from utilis import (ensiklopedia, 
                     data_rekap, 
                     simpan_rekap, 
