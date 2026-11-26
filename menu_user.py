@@ -1,12 +1,13 @@
 import os 
 import inquirer
 from crud_jual_beli import beli_tanaman
-from crud_ensiklopedia import read_ensiklopedia, search_ensiklopedia, enter
+from crud_ensiklopedia import read_ensiklopedia, search_ensiklopedia
 from crud_funfact import random_funfact
+from utilis import enter, bersihkan_terminal, pesan_sukses
 
 def menu_user():
     while True:
-        os.system("cls" if os.name == "nt" else "clear")
+        bersihkan_terminal()
         jawaban = inquirer.prompt([
             inquirer.List(
                 "menu",
@@ -21,7 +22,7 @@ def menu_user():
             )
         ])
         if jawaban is None or jawaban["menu"].startswith("5."):
-            print("Terima kasih telah menggunakan Kebun Kita!")
+            pesan_sukses("Terima kasih telah menggunakan Kebun Kita!")
             enter()
             break
 
