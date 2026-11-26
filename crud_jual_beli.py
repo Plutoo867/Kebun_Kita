@@ -19,10 +19,10 @@ from utilis import (ensiklopedia,
 def cek_tanaman(nama):
     for item in ensiklopedia.values():
         if nama.lower() == item["nama"].lower():
-            pesan_sukses("Bunga ditemukan dalam daftar stock!")
+            pesan_sukses("Tanaman ditemukan dalam daftar stock!")
             return True
         else:
-            pesan_error("Bunga tidak ditemukan dalam daftar stock!")
+            pesan_error("Tanaman tidak ditemukan dalam daftar stock!")
             return False
 
 def tampilkan_struk(keranjang_item, total_belanja, waktu_transaksi):
