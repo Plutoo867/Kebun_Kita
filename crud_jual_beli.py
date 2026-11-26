@@ -34,7 +34,7 @@ def tampilkan_struk(keranjang_item, total_belanja, waktu_transaksi):
     print(f"Waktu : {waktu_transaksi}".ljust(lebar))
     print("=" * lebar)
     for item in keranjang_item:
-        nama = item["nama"]
+        nama = item["nama"].capitalize()
         jumlah = item["jumlah"]
         harga = format_rp(item["harga"])
         subtotal = format_rp(item["subtotal"])
@@ -70,7 +70,7 @@ def read_jual_beli():
 
     for no, id_tanaman in enumerate(id_kosong, start=1):
         info = ensiklopedia[id_tanaman]
-        nama = f"{warna_isi}{info.get('nama', '-')}{Style.reset}"
+        nama = f"{warna_isi}{info.get('nama', '-').capitalize()}{Style.reset}"
         harga = int(info.get("harga", 0))
         stock = int(info.get("stock", 0))
         table.add_row([

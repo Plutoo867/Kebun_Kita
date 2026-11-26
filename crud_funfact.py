@@ -29,9 +29,9 @@ def random_funfact():
     if funfacts:
         random_data = random.choice(funfacts)
 
-        funfact_wrapped = textwrap.fill(random_data["Funfact"], width=50)
+        funfact_wrapped = textwrap.fill(random_data["Funfact"].capitalize(), width=50)
         table_detail_funfact({
-            "Nama Tanaman": random_data["Nama_tanaman"],
+            "Nama Tanaman": random_data["Nama_tanaman"].capitalize(),
             "Funfact": funfact_wrapped
         })
         enter()
@@ -65,8 +65,8 @@ def read_funfact():
 
     no = 1
     for id_data in id_kosong:
-        tanaman = f"{warna_isi}{ensiklopedia[id_data]['nama']}{Style.reset}"
-        funfact = f"{warna_isi}{ensiklopedia[id_data]['funfact']}{Style.reset}"
+        tanaman = f"{warna_isi}{ensiklopedia[id_data]['nama'].capitalize()}{Style.reset}"
+        funfact = f"{warna_isi}{ensiklopedia[id_data]['funfact'].capitalize()}{Style.reset}"
         table.add_row([
             no,
             tanaman,
