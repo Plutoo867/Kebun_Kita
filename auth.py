@@ -1,8 +1,4 @@
-import os
-import json
-import re
-import inquirer
-import pwinput
+import json, re, inquirer, pwinput
 from utilis import (pesan_sukses, 
                     pesan_error,
                     bersihkan_terminal,

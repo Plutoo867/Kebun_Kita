@@ -151,6 +151,9 @@ def create_jual_beli():
                     ]
                 jawaban = inquirer.prompt(konfirmasi)
 
+                if jawaban is None:
+                    return
+
                 if jawaban["konfirmasi"] == "Ya":
                     ensiklopedia[id_pilihan]["harga"] = harga_int
                     ensiklopedia[id_pilihan]["stock"] = stock_int
@@ -189,15 +192,15 @@ def update_jual_beli():
         daftar_jual_beli(id_dengan_harga_dan_stock, "Daftar Penjualan Yang Bisa Diedit")
         try:
             edit = input("Masukkan nomor tanaman yang ingin diedit: ").strip()
-            if pilihan == "0":
+            if edit == "0":
                 break
 
-            elif not re.fullmatch(r"[0-9]+", pilihan):
+            elif not re.fullmatch(r"[0-9]+", edit):
                 pesan_error("Hanya boleh angka valid!")
                 enter()
                 continue
-            
-            pilihan = int(pilihan)
+
+            edit = int(edit)
             if edit < 1 or edit > len(id_dengan_harga_dan_stock):
                 pesan_error("Nomor tanaman tidak valid!")
                 enter()
@@ -258,6 +261,10 @@ def update_jual_beli():
                         )
                     ]
             jawaban = inquirer.prompt(konfirmasi)
+
+            if jawaban is None:
+                return
+
             if jawaban["konfirmasi"] == "Ya":
                 ensiklopedia[id_pilihan]["harga"] = harga_baru
                 ensiklopedia[id_pilihan]["stock"] = stock_baru
@@ -318,6 +325,9 @@ def delete_jual_beli():
                     )
                 ]
             jawaban = inquirer.prompt(konfirmasi)
+
+            if jawaban is None:
+                return
 
             if jawaban["konfirmasi"] == "Ya":
                 ensiklopedia[id_pilihan]["harga"] = "0"

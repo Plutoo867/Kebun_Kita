@@ -130,6 +130,9 @@ def create_ensiklopedia():
                     ]
                 jawaban = inquirer.prompt(konfirmasi)
 
+                if jawaban is None:
+                    return
+
                 if jawaban["konfirmasi"] == "Ya":
                     ensiklopedia[id_tanaman()] = {
                         "nama": nama,
@@ -186,7 +189,7 @@ def update_ensiklopedia():
                 pesan_sukses("(Tekan Enter jika tidak ingin mengubah)")
 
                 while True:   
-                    nama_baru      = input(f"Nama Tanaman [{tanaman_edit['nama']}]: ").capitalive().strip()
+                    nama_baru      = input(f"Nama Tanaman [{tanaman_edit['nama']}]: ").capitalize().strip()
                     ilmiah_baru    = input(f"Nama Ilmiah [{tanaman_edit['nama_ilmiah']}]: ").strip()
                     deskripsi_baru = input(f"Deskripsi [{tanaman_edit['deskripsi']}]: ").strip()
                     manfaat_baru   = input(f"Manfaat Tanaman [{tanaman_edit['manfaat']}]: ").strip()
@@ -216,6 +219,9 @@ def update_ensiklopedia():
                             ]
             
                         jawaban = inquirer.prompt(konfirmasi)
+
+                        if jawaban is None:
+                            return
             
                         if jawaban["konfirmasi"] == "Ya":
                             if nama_baru != "":
@@ -281,6 +287,9 @@ def delete_ensiklopedia():
                     ]
 
                 jawaban = inquirer.prompt(konfirmasi)
+
+                if jawaban is None:
+                    return
 
                 if jawaban["konfirmasi"] == "Ya":
                     ensiklopedia.pop(tanaman_id[hapus - 1])

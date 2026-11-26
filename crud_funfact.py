@@ -1,7 +1,4 @@
-import random
-import textwrap
-import inquirer
-import re
+import random, textwrap, inquirer, re
 from prettytable import PrettyTable
 from colored import fore, Style
 from utilis import (ensiklopedia, 
@@ -44,13 +41,13 @@ def read_funfact():
     bersihkan_terminal()
     warna_judul: str = f"{fore(214)}"
     warna_isi: str = f"{fore(215)}"
-    id_kosong = []
+    id_funfact = []
 
     for id_data in ensiklopedia:
         if ensiklopedia[id_data]["funfact"] != "0":
-            id_kosong.append(id_data)
+            id_funfact.append(id_data)
 
-    if not id_kosong:
+    if not id_funfact:
         pesan_error("Tidak ada tanaman yang memiliki funfact!")
         enter()
         return
@@ -64,7 +61,7 @@ def read_funfact():
     table.max_width["Funfact"] = 50
 
     no = 1
-    for id_data in id_kosong:
+    for id_data in id_funfact:
         tanaman = f"{warna_isi}{ensiklopedia[id_data]['nama'].capitalize()}{Style.reset}"
         funfact = f"{warna_isi}{ensiklopedia[id_data]['funfact'].capitalize()}{Style.reset}"
         table.add_row([
@@ -129,6 +126,9 @@ def create_funfact():
                     )
                 ]
                 jawaban = inquirer.prompt(konfirmasi)
+
+                if jawaban is None:
+                    return
 
                 if jawaban["konfirmasi"] == "Ya":
                     ensiklopedia[id_pilihan]["funfact"] = funfact
@@ -206,6 +206,9 @@ def update_funfact():
                 ]
                 jawaban = inquirer.prompt(konfirmasi)
 
+                if jawaban is None:
+                    return
+
                 if jawaban["konfirmasi"] == "Ya":
                     ensiklopedia[id_pilihan]["funfact"] = funfact_baru
                     simpan_data()
@@ -268,6 +271,10 @@ def delete_funfact():
                 )
             ]
             jawaban = inquirer.prompt(konfirmasi)
+
+            if jawaban is None:
+                return
+
             if jawaban["konfirmasi"] == "Ya":
                 ensiklopedia[id_pilihan]["funfact"] = "0"
                 simpan_data()

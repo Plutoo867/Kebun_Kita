@@ -1,4 +1,3 @@
-import os 
 import inquirer
 from crud_jual_beli import beli_tanaman
 from crud_ensiklopedia import read_ensiklopedia, search_ensiklopedia
