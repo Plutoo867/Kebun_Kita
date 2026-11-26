@@ -360,7 +360,7 @@ def beli_tanaman():
                 id_kosong.append(id_data)
     
         if not id_kosong:
-            pesan_error("Tidak ada tanaman yang bisa dijual!")
+            pesan_error("Tidak ada tanaman yang bisa dibeli!")
             enter()
             return
 
