@@ -37,5 +37,14 @@
         "harga": 8000,
         "stock": 3,
         "funfact": "anjayyy"
+    },
+    "id6": {
+        "nama": "dummy",
+        "nama_ilmiah": "dummyilmiah",
+        "deskripsi": "dummydesc",
+        "manfaat": "dummymanfaat",
+        "harga": "0",
+        "stock": "0",
+        "funfact": "0"
     }
 }
