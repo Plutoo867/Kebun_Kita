@@ -110,5 +110,25 @@
             }
         ],
         "total_belanja": 2000
+    },
+    {
+        "waktu": "2026-11-26 12:16:52",
+        "items": [
+            {
+                "id": "id2",
+                "nama": "Jambu",
+                "harga": 2000,
+                "jumlah": 77,
+                "subtotal": 154000
+            },
+            {
+                "id": "id2",
+                "nama": "Jambu",
+                "harga": 2000,
+                "jumlah": 5,
+                "subtotal": 10000
+            }
+        ],
+        "total_belanja": 164000
     }
 ]

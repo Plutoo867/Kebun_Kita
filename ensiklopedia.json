@@ -15,7 +15,7 @@
         "deskripsi": "Jambu Biji",
         "manfaat": "Mantap",
         "harga": 2000,
-        "stock": 263,
+        "stock": 181,
         "funfact": "gokill",
         "makna": "Enak dan Bergizi"
     },
@@ -29,13 +29,22 @@
         "funfact": "s",
         "makna": "Menjaga Kesehatan Mata & Daya Tahan Tubuh"
     },
+    "id4": {
+        "nama": "cabai hijau",
+        "nama_ilmiah": "s",
+        "deskripsi": "s",
+        "manfaat": "s",
+        "harga": "0",
+        "stock": "0",
+        "funfact": "0"
+    },
     "id5": {
-        "nama": "cabai",
-        "nama_ilmiah": "j",
-        "deskripsi": "j",
-        "manfaat": "j",
-        "harga": 8000,
-        "stock": 3,
-        "funfact": "anjayyy"
+        "nama": "cabai merah",
+        "nama_ilmiah": "s",
+        "deskripsi": "s",
+        "manfaat": "s",
+        "harga": "0",
+        "stock": "0",
+        "funfact": "0"
     }
 }
