@@ -36,7 +36,7 @@ def search_awal(data, keyword):
 
 def read_ensiklopedia():
     if not ensiklopedia:
-        pesan_error("Tidak ada tanaman yang bisa dijual!")
+        pesan_error("Tidak ada koleksi tanaman!")
         enter()
         return
 
@@ -159,6 +159,11 @@ def create_ensiklopedia():
             enter()
         
 def update_ensiklopedia():
+    if not ensiklopedia:
+        pesan_error("Tidak ada tanaman yang bisa diedit!")
+        enter()
+        return
+    
     while True:   
         bersihkan_terminal()
         print("0. Kembali ke menu utama")
@@ -244,6 +249,11 @@ def update_ensiklopedia():
             enter()
 
 def delete_ensiklopedia():
+    if not ensiklopedia:
+        pesan_error("Tidak ada tanaman yang bisa dihapus!")
+        enter()
+        return
+    
     while True:
         bersihkan_terminal()
         print("0. Kembali ke menu utama")
