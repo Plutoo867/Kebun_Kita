@@ -35,6 +35,11 @@ def search_awal(data, keyword):
     }
 
 def read_ensiklopedia():
+    if not ensiklopedia:
+        pesan_error("Tidak ada tanaman yang bisa dijual!")
+        enter()
+        return
+
     while True:
         bersihkan_terminal()
         print("0. Kembali ke menu utama")
@@ -52,7 +57,7 @@ def read_ensiklopedia():
                 tanaman_id = list(ensiklopedia.keys()) 
                 tanaman_terpilih = ensiklopedia[tanaman_id [detail - 1]]
                 detail_tanaman = {
-                    "Nama Tanaman": tanaman_terpilih["nama"],
+                    "Nama Tanaman": tanaman_terpilih["nama"].capitalize(),
                     "Nama Ilmiah": tanaman_terpilih["nama_ilmiah"],
                     "Deskripsi": tanaman_terpilih["deskripsi"],
                     "Manfaat Tanaman": tanaman_terpilih["manfaat"],
@@ -176,7 +181,7 @@ def update_ensiklopedia():
                 pesan_sukses("(Tekan Enter jika tidak ingin mengubah)")
 
                 while True:   
-                    nama_baru      = input(f"Nama Tanaman [{tanaman_edit['nama']}]: ").strip()
+                    nama_baru      = input(f"Nama Tanaman [{tanaman_edit['nama']}]: ").capitalive().strip()
                     ilmiah_baru    = input(f"Nama Ilmiah [{tanaman_edit['nama_ilmiah']}]: ").strip()
                     deskripsi_baru = input(f"Deskripsi [{tanaman_edit['deskripsi']}]: ").strip()
                     manfaat_baru   = input(f"Manfaat Tanaman [{tanaman_edit['manfaat']}]: ").strip()
@@ -328,7 +333,7 @@ def search_ensiklopedia():
 
                 for data in hasil.values():
                     detail_tanaman = {
-                        "Nama Tanaman": data["nama"],
+                        "Nama Tanaman": data["nama"].capitalize(),
                         "Nama Ilmiah": data["nama_ilmiah"],
                         "Deskripsi": data["deskripsi"],
                         "Manfaat Tanaman": data["manfaat"],

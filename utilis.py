@@ -97,13 +97,14 @@ def daftar_tanaman(ensiklopedia):
     table.align["Nama Tanaman"] = "l"
 
     for nomor, tanaman in enumerate(ensiklopedia.values(), start=1):
-        tanaman = f"{warna_isi}{tanaman['nama']}{Style.reset}"
+        tanaman = f"{warna_isi}{tanaman['nama'].capitalize()}{Style.reset}"
         table.add_row([nomor, tanaman])
 
     print(table)
 
 def table_detail_tanaman(data):
     warna_judul: str = f"{fore(204)}"
+    warna_isi: str = f"{fore(198)}"
     table = PrettyTable()
 
     table.title = f"{warna_judul}DETAIL TANAMAN{Style.reset}"
@@ -114,7 +115,7 @@ def table_detail_tanaman(data):
     table.min_width["Isi"] = 25
     table.max_width["Isi"] = 25
 
-    for label, isi in data.items():
+    for label, isi, in data.items():
         table.add_row([label, isi])
 
     print(table)
@@ -134,7 +135,7 @@ def daftar_funfact(daftar_id, judul):
     table.align["Nama Tanaman"] = "l"
 
     for nomor, id_data in enumerate(daftar_id, start=1):
-        tanaman = f"{warna_isi}{ensiklopedia[id_data]['nama']}{Style.reset}"
+        tanaman = f"{warna_isi}{ensiklopedia[id_data]['nama'].capitalize()}{Style.reset}"
         table.add_row([nomor, tanaman])
 
     print(table)
@@ -170,7 +171,7 @@ def daftar_jual_beli(daftar_id, judul):
     table.align["Nama Tanaman"] = "l"
 
     for nomor, id_data in enumerate(daftar_id, start=1):
-        tanaman = f"{warna_isi}{ensiklopedia[id_data]['nama']}{Style.reset}"
+        tanaman = f"{warna_isi}{ensiklopedia[id_data]['nama'].capitalize()}{Style.reset}"
         table.add_row([nomor, tanaman])
 
     print(table)
@@ -188,7 +189,7 @@ def table_detail_jual_beli(daftar_id):
 
     for no, id_tanaman in enumerate(daftar_id, start=1):
         info = ensiklopedia[id_tanaman]
-        nama = f"{warna_isi}{info.get('nama', '-')}{Style.reset}"
+        nama = f"{warna_isi}{info.get('nama', '-').capitalize()}{Style.reset}"
         harga = int(info.get("harga", 0))
         stock = int(info.get("stock", 0))
         table.add_row([
